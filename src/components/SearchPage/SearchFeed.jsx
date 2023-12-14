@@ -9,8 +9,8 @@ export default function SearchFeed() {
 
   useEffect(() => {
     const getAccessToken = async () => {
-      const clientId = 'L5ows7wTtxeTesA1Ko6FB2Ml601ReOOQR3zmk0NcvM690mAXkY';
-      const clientSecret = '81WeA8ISDlJyA7sAvFzUephFDBUA1O6VNepENcHr';
+      const clientId = '';
+      const clientSecret = '';
 
       try {
         const response = await fetch('https://api.petfinder.com/v2/oauth2/token', {
