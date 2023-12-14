@@ -1,0 +1,29 @@
+@media (max-width: 600px) {
+    h1 {
+      line-height: 0.5;
+    }
+  }
+  
+.header-container {
+    position: absolute;
+    /* margin-top: -250px; */
+    text-align: center;
+    min-width: 600px;
+    background-color: transparent;
+}
+
+h1 {
+    position: absolute;
+    width: 100vw;
+    z-index: 1;
+    text-align: center;
+    letter-spacing: -6px; 
+    font-family: 'Debock-Personal-Use';
+    color: #eb521f;
+    font-size: 120px; 
+    font-weight: 600;
+    margin-top: 70px;
+    margin-bottom: 60px;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+
+}

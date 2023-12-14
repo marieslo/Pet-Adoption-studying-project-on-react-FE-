@@ -1,0 +1,187 @@
+@media (max-width: 600px) {
+  .bg-body-tertiary {
+    flex-direction: column; 
+  }
+}
+
+@media (min-width: 600px) {
+  .bg-body-tertiary {
+    flex-direction: column; 
+  }
+}
+
+  /* .navbar-container{
+    display: flex;
+    align-items: center;
+    font-weight: 100;
+    margin: 0 auto;
+    margin-top: 300px;
+    background-color: transparent !important;
+    flex-direction: row;
+    justify-content: center;
+    position: relative;
+    width: 100vh;
+    border-radius: 0.3rem;
+    transform: translate(1rem, -50%);
+  } */
+
+.btn {
+  width: 200px;
+  height: 40px;
+  border-radius: 0.3rem;
+  justify-self: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: 0.3s ease;
+  grid-column: 1 / 2;
+  grid-row: 5 / 6;
+  margin-right: 40px;
+  letter-spacing: 0px; 
+  font-family: 'Debock-Personal-Use';
+  font-size: 30px;
+  color:  #eb521f;
+  text-align: center;
+  background-color: #FFFFFF;
+}
+
+.btn:hover{
+  background-color: #FFFFFF;
+  color:  #eb521f;
+}
+
+  .bg-body-tertiary .form-control:focus {
+    outline: none !important;
+    border: 1px solid #eb521f;
+    box-shadow: 0 0 0 0.2rem #eb521f;
+  }
+
+  .bg-body-tertiary .form-control {
+    border-radius: 1.25rem; 
+    color: #eb521f;
+  }
+
+  .bg-body-tertiary {
+    color: #eb521f;
+    font-weight: 300;
+    font-size: 0.9rem;
+    /* padding: 0.5rem; */
+    background-color: transparent !important;
+    display: flex;
+    flex-direction: column; 
+  }
+  
+  .mr-sm-2 {
+    margin-right: 10px;
+    width: 400px;
+  }
+
+.btn-1{
+  color: #FFFFFF;
+  position: relative;
+  bottom: 20px;
+  border:none;
+  box-shadow: none;
+  width: 200px;
+  height: 40px;
+  line-height: 42px;
+  -webkit-perspective: 230px;
+  perspective: 230px;
+  background-color: transparent;
+}
+
+.btn-1 span {
+  color: #FFFFFF;
+  background: #eb521f;
+  background: linear-gradient(0deg, rgb(238, 123, 0) 0%, rgb(251, 85, 2) 100%);
+  display: block;
+  position: absolute;
+  width: 200px;
+  height: 40px;
+  /* box-shadow:inset 2px 2px 2px 0px rgba(255,255,255,.5); */
+   /* 7px 7px 20px 0px rgba(0,0,0,.1),
+   4px 4px 5px 0px rgba(0,0,0,.1); */
+  border-radius: 5px;
+  margin:0;
+  text-align: center;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  -webkit-transition: all .3s;
+  transition: all .3s;
+  background-color: transparent;
+}
+
+.btn-1 span:nth-child(1) {
+  box-shadow: 0 0.25rem 0 rgb(143, 78, 246);
+   /* -7px -7px -7px 0px rgb(143, 78, 246),
+   -4px -4px 15px 0px rgb(143, 78, 246); */
+   /* 7px 7px 20px 0px #0002,
+   4px 4px 5px 0px #0001; */
+  -webkit-transform: rotateX(90deg);
+  -moz-transform: rotateX(90deg);
+  transform: rotateX(90deg);
+  -webkit-transform-origin: 50% 50% -20px;
+  -moz-transform-origin: 50% 50% -20px;
+  transform-origin: 50% 50% -20px;
+}
+
+.btn-1 span:nth-child(2) {
+  box-shadow: 0 0.25rem 0 rgb(143, 78, 246);
+  -webkit-transform: rotateX(0deg);
+  -moz-transform: rotateX(0deg);
+  transform: rotateX(0deg);
+  -webkit-transform-origin: 50% 50% -20px;
+  -moz-transform-origin: 50% 50% -20px;
+  transform-origin: 50% 50% -20px;
+}
+
+.btn-1:hover span:nth-child(1) {
+  /* box-shadow:inset 2px 2px 2px 0px rgba(255,255,255,.5); */
+   /* 7px 7px 20px 0px rgba(0,0,0,.1),
+   4px 4px 5px 0px rgba(0,0,0,.1); */
+  -webkit-transform: rotateX(0deg);
+  -moz-transform: rotateX(0deg);
+  transform: rotateX(0deg);
+}
+
+.btn-1:hover span:nth-child(2) {
+  /* box-shadow:inset 2px 2px 2px 3px rgba(255,255,255,.5); */
+   /* 7px 7px 20px 0px rgba(0,0,0,.1),
+   4px 4px 5px 0px rgba(0,0,0,.1); */
+ color: transparent;
+  -webkit-transform: rotateX(-90deg);
+  -moz-transform: rotateX(-90deg);
+  transform: rotateX(-90deg);
+}
+
+.btn-2 {
+  box-shadow: 0 0.25rem 0#eb521f;
+  background: rgb(143, 78, 246);
+  background: linear-gradient(0deg, rgba(96,9,240,1) 0%, rgba(129,5,240,1) 100%);
+  border: none;
+  color: #FFFFFF;
+}
+
+.btn-2:before {
+  height: 0%;
+  width: 2px;
+}
+
+.btn-2:hover {
+  box-shadow:  4px 4px 6px 0 rgba(255,255,255,.5),
+              -4px -4px 6px 0 rgba(116, 125, 136, .5), 
+    inset -4px -4px 6px 0 rgba(255,255,255,.2),
+    inset 4px 4px 6px 0 rgba(0, 0, 0, .4);
+}
+
+.navbarbtn1{
+  margin-top: 300px !important;
+}
+
+.button-to-modal{
+  margin-top: 900px;
+  position: absolutes;
+  z-index: 1;
+}
