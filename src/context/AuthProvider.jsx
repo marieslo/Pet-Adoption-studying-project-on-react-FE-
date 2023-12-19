@@ -1,4 +1,5 @@
 import React, { createContext, useContext, useState } from 'react';
+import localforage from 'localforage';
 
 const AuthContext = createContext();
 
@@ -9,12 +10,14 @@ export const useAuth = () => {
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
 
-  const login = (userData) => {
+  const login = async (userData) => {
     setUser(userData);
+    await localforage.setItem('user', userData);
   };
 
-  const logout = () => {
+  const logout = async () => {
     setUser(null);
+    await localforage.removeItem('user');
   };
 
   const authContextValue = {
