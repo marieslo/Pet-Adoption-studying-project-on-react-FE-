@@ -2,10 +2,12 @@ import React, { useState } from 'react';
 import { Modal } from 'react-bootstrap';
 import SignUpForm from './SignUpForm';
 import LoginForm from './LoginForm';
+import { useNavigate } from 'react-router-dom'; 
 import './LoginSignUp.css';
 
 export default function LoginSignUpModal({ show, onHide, onSignup, onLogin }) {
   const [isLoginPage, setIsLoginPage] = useState(true);
+  const navigate = useNavigate();
 
   const handleTogglePage = () => {
     setIsLoginPage(!isLoginPage);
@@ -18,14 +20,14 @@ export default function LoginSignUpModal({ show, onHide, onSignup, onLogin }) {
     registeredUsers.push({ email: userData.email, password: userData.password });
     localStorage.setItem('registeredUsers', JSON.stringify(registeredUsers));
     onHide();
-    window.location.href = '/';
+    navigate('/home');
   };
 
   const handleLogin = (userData) => {
     onLogin(userData);
     localStorage.setItem('userData', JSON.stringify(userData));
     onHide();
-    window.location.href = '/home'; 
+    navigate('/home');
   };
 
   return (

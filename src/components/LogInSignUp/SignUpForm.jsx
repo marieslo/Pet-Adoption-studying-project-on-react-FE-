@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
-import { Form } from 'react-bootstrap';
+import { Form, Alert } from 'react-bootstrap';
 import localforage from 'localforage';
+import { useNavigate } from 'react-router-dom';
+import { nanoid } from 'nanoid';
 
 import './LoginSignUp.css';
 
@@ -11,6 +13,13 @@ export default function SignUpForm({ onSubmit }) {
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [phoneNumber, setPhoneNumber] = useState('');
+  const [showSuccess, setShowSuccess] = useState(false);
+
+  const navigate = useNavigate();
+
+  const generateUniqueId = () => {
+    return nanoid();
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -21,6 +30,7 @@ export default function SignUpForm({ onSubmit }) {
     }
 
     const userData = {
+      id: generateUniqueId(),
       email,
       password,
       firstName,
@@ -28,12 +38,33 @@ export default function SignUpForm({ onSubmit }) {
       phoneNumber,
     };
 
-    await localforage.setItem('userData', userData);
-    onSubmit(userData);
+    try {
+      await localforage.setItem('userData', userData);
+
+      const registeredUsers = (await localforage.getItem('registeredUsers')) || [];
+      registeredUsers.push(userData);
+      await localforage.setItem('registeredUsers', registeredUsers);
+
+      setShowSuccess(true);
+
+      onSubmit(userData);
+
+      setTimeout(() => {
+        navigate('/');
+      }, 500);
+    } catch (error) {
+      console.error('Error during signup:', error);
+    }
   };
 
   return (
     <Form onSubmit={handleSubmit}>
+      {showSuccess && (
+        <Alert variant="success">
+          Signup successful! You can now log in.
+        </Alert>
+      )}
+
       <Form.Group controlId="formBasicEmail">
         <Form.Label>Email address</Form.Label>
         <Form.Control

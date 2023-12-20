@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Form, Alert } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
-import localforage from 'localforage'; 
+import localforage from 'localforage';
 
 import './LoginSignUp.css';
 
@@ -13,17 +13,15 @@ export default function LoginForm({ onSubmit, onSignupRedirect }) {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-
     const registeredUsers = await localforage.getItem('registeredUsers') || [];
 
-    const isUserRegistered = registeredUsers.some(
-      (user) => user.email === email && user.password === password
-    );
+    const user = registeredUsers.find((user) => user.email === email);
 
-    if (!isUserRegistered) {
+    if (!user) {
       setShowAlert(true);
       return;
     }
+
 
     onSubmit({ email, password });
   };
@@ -32,10 +30,7 @@ export default function LoginForm({ onSubmit, onSignupRedirect }) {
     <Form onSubmit={handleSubmit}>
       {showAlert && (
         <Alert variant="danger">
-          User not registered.{' '}
-          <Link to="/signup" onClick={onSignupRedirect}>
-            Sign up here.
-          </Link>
+          User not registered or incorrect password.{' '}
         </Alert>
       )}
 

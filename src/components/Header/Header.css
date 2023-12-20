@@ -1,24 +1,16 @@
-.header-container {
-    position: absolute;
-    margin-top: 150px;
-    text-align: center;
-    min-width: 600px;
-    background-color: transparent;
-}
 
 h1 {
-    position: absolute;
+    position: relative;
     width: fit-content;
     text-align: center;
-    letter-spacing: -4px; 
-    font-family: 'Montserrat Alternates', sans-serif;
-    background: linear-gradient(to right, #732002, #F2955E) text; 
-    color: transparent; 
-    font-size: 4rem; 
-    font-weight: 800;
+    font-family: 'Rubik Bubbles';
+    font-size: 3rem;
     line-height: 1;
     text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    margin-top: 50px;
-    margin-bottom: 60px;
-    z-index: 3;
-}
+    top: 100px;
+    left: 50px;
+    bottom: 0;
+    margin-bottom: 80px;
+    background: linear-gradient(to right, #F25D27, #593202) text;
+    color: transparent;
+  }
