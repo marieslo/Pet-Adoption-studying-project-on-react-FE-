@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
-import { Modal } from 'react-bootstrap';
+import { Modal, Nav, Tab } from 'react-bootstrap';
 import SignUpForm from './SignUpForm';
 import LoginForm from './LoginForm';
-import { useNavigate } from 'react-router-dom'; 
+import { useNavigate } from 'react-router-dom';
 import './LoginSignUp.css';
 
 export default function LoginSignUpModal({ show, onHide, onSignup, onLogin }) {
@@ -20,7 +20,7 @@ export default function LoginSignUpModal({ show, onHide, onSignup, onLogin }) {
     registeredUsers.push({ email: userData.email, password: userData.password });
     localStorage.setItem('registeredUsers', JSON.stringify(registeredUsers));
     onHide();
-    navigate('/home');
+    navigate('/home', { state: { firstName: userData.firstName, lastName: userData.lastName } });
   };
 
   const handleLogin = (userData) => {
@@ -30,24 +30,36 @@ export default function LoginSignUpModal({ show, onHide, onSignup, onLogin }) {
     navigate('/home');
   };
 
+  const getTabTitle = () => (isLoginPage ? 'Login' : 'Sign Up');
+
   return (
-    <Modal show={show} onHide={onHide}>
-      <Modal.Header closeButton>
-        <Modal.Title>
-          {isLoginPage ? 'Login' : 'Sign Up'}
-        </Modal.Title>
-      </Modal.Header>
-      <Modal.Body>
-        {isLoginPage ? (
-          <LoginForm onSubmit={handleLogin} />
-        ) : (
-          <SignUpForm onSubmit={handleSignup} />
-        )}
-        <hr />
-        <button className='modal-btn' onClick={handleTogglePage}>
-          {isLoginPage ? 'Switch to Sign Up' : 'Switch to Login'}
-        </button>
-      </Modal.Body>
+    <Modal show={show} onHide={onHide} centered>
+      <Tab.Container activeKey={isLoginPage ? 'login' : 'signup'}>
+        <Modal.Header closeButton>
+          <Nav className='modal-tabs'>
+            <Nav.Item>
+              <Nav.Link className='tab-login' eventKey="login" onClick={handleTogglePage}>
+                Login
+              </Nav.Link>
+            </Nav.Item>
+            <Nav.Item>
+              <Nav.Link className='tab-signup' eventKey="signup" onClick={handleTogglePage}>
+                Sign Up
+              </Nav.Link>
+            </Nav.Item>
+          </Nav>
+        </Modal.Header>
+        <Modal.Body>
+          <Tab.Content>
+            <Tab.Pane eventKey="login">
+              <LoginForm onSubmit={handleLogin} />
+            </Tab.Pane>
+            <Tab.Pane eventKey="signup">
+              <SignUpForm onSubmit={handleSignup} />
+            </Tab.Pane>
+          </Tab.Content>
+        </Modal.Body>
+      </Tab.Container>
     </Modal>
   );
 }

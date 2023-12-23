@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Form, Alert } from 'react-bootstrap';
+import { Form, Alert, Spinner } from 'react-bootstrap';
 import localforage from 'localforage';
 import { useNavigate } from 'react-router-dom';
 import { nanoid } from 'nanoid';
@@ -14,6 +14,7 @@ export default function SignUpForm({ onSubmit }) {
   const [lastName, setLastName] = useState('');
   const [phoneNumber, setPhoneNumber] = useState('');
   const [showSuccess, setShowSuccess] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const navigate = useNavigate();
 
@@ -39,21 +40,25 @@ export default function SignUpForm({ onSubmit }) {
     };
 
     try {
+      setLoading(true);
+
       await localforage.setItem('userData', userData);
 
       const registeredUsers = (await localforage.getItem('registeredUsers')) || [];
       registeredUsers.push(userData);
       await localforage.setItem('registeredUsers', registeredUsers);
-
       setShowSuccess(true);
 
       onSubmit(userData);
 
       setTimeout(() => {
-        navigate('/');
+        setShowSuccess(false);
+        setLoading(false);
+        navigate('/home');
       }, 500);
     } catch (error) {
       console.error('Error during signup:', error);
+      setLoading(false);
     }
   };
 
@@ -120,7 +125,14 @@ export default function SignUpForm({ onSubmit }) {
       </Form.Group>
 
       <button className='switch-login-signup-btn' type="submit">
-        Sign Up
+        {loading ? (
+          <>
+            <Spinner as="span" animation="border" size="sm" role="status" aria-hidden="true" />
+            {' Loading...'}
+          </>
+        ) : (
+          'Sign Up'
+        )}
       </button>
     </Form>
   );

@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import localforage from 'localforage';
 
-export default function EditProfileForm({ onSave }) {
+export default function EditProfileForm({ onSave, initialData }) {
   const [formData, setFormData] = useState({
     email: '',
     password: '',
@@ -10,17 +11,28 @@ export default function EditProfileForm({ onSave }) {
     shortBio: '',
   });
 
+  const [successMessage, setSuccessMessage] = useState('');
+
+  useEffect(() => {
+    setFormData(initialData);
+  }, [initialData]);
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prevData) => ({ ...prevData, [name]: value }));
   };
-
-  const handleSave = () => {
-    onSave(formData);
+  const handleSave = async () => {
+    await onSave(formData);
+    setSuccessMessage('Your profile updated successfully');
+    console.log('Success message set:', successMessage);
   };
 
   return (
-    <div>
+    <>
+  <div className='success-edit-profile-msg'>
+        {successMessage && <p className="success-message">{successMessage}</p>}
+        </div>
+    <div className='edit-profile-container'>
       <h2>Edit Profile</h2>
       <form>
         <div>
@@ -81,5 +93,7 @@ export default function EditProfileForm({ onSave }) {
         </button>
       </form>
     </div>
+   
+    </>
   );
 }

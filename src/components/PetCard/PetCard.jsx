@@ -7,17 +7,29 @@ export default function PetCard({ pet }) {
     return null;
   }
 
-  const { name, status, photos } = pet;
-  const hasPhotos = photos && photos.length > 0;
+  const { id, name, status, image } = pet; 
+
+  const hasImage = image && typeof image === 'string';
+  const defaultImageUrl = '../../styles/icons/alt-instead-pet-photo.png';
 
   return (
     <div className='pet-card-container'>
       <Card className='pet-card'>
-        {hasPhotos && (
+        {hasImage && (
           <div className="custom-frame">
             <Card.Img
               variant="top"
-              src={photos[0].large}
+              src={image}
+              alt={`Image of ${name}`}
+              className="card-img"
+            />
+          </div>
+        )}
+        {!hasImage && (
+          <div className="custom-frame">
+            <Card.Img
+              variant="top"
+              src={defaultImageUrl}
               alt={`Image of ${name}`}
               className="card-img"
             />

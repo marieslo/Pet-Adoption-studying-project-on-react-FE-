@@ -1,0 +1,39 @@
+.search-button {
+  position: absolute;
+  font-family: 'Space Mono', monospace;
+  background-color: #F25D27;
+  border: none;
+  border-radius: 50%;
+  height: 130px;
+  width: 130px;
+  color: #FFFFFF;
+  font-size: 20px;
+  font-weight: 600;
+  letter-spacing: -2px;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 2px 4px #8C4303;
+  z-index: 100;
+  padding: 20px;
+  top: 45%;
+  left: 80%;
+  bottom: 0%;
+  transition: transform 0.3s ease;
+  background: radial-gradient(circle at 60px 20px,#eb59fb, #f14400);
+}
+
+
+@keyframes jump {
+    0%, 20%, 50%, 80%, 100% {
+        transform: translateY(0);
+    }
+    40% {
+        transform: translateY(-10px);
+    }
+    60% {
+        transform: translateY(-5px);
+    }
+}
+
+.search-button:hover {
+    animation: jump 0.8s infinite; 
+}

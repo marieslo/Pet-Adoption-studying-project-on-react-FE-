@@ -4,32 +4,30 @@
     font-size: 30px;
     min-width: 400px;
   }
+  .search-category-card-container {
+    width: 80%;
+  }
 }
 
 .home-page-container {
   position: absolute;
-  background-image: url('../../styles/backgrounds/happy-woman-with-cute-dog.jpg');
-  background-size: cover;
-  background-position: center;
+  background-image: url('../../styles/backgrounds/home-page-background.jpg');
+  background-size: contain;
+  background-position: right;
+  background-color: #FFAE25;
+  background-repeat: no-repeat;
   width: 100vw;
   height: 100vh;
   z-index: 5;
 }
 
 
-.user-greeting{
-  margin-top: 40px;
-  position: absolute;
-  z-index: 2;
-  top: 10%;
-  left: 20%;
-  transform: translate(-50%, -50%);
-  width: fit-content;
-  font-weight: 300;
-  font-size: 1.4rem;
-  letter-spacing: -2px;
-  line-height: 1.1;
+.home-page-call-to-action {
   font-family: 'Space Mono', monospace;
+  margin-top: 150px;
+  margin-left: 150px;
+  width: 400px;
+  font-size: 1.2rem;
   color: #593202;
-  text-align: center;
+  letter-spacing: -1px;
 }

@@ -1,7 +1,7 @@
 @media (max-width: 768px) {
   .mr-sm-2 {
     flex: 1 !important;
-    margin-top: 40px !important;
+    margin: 10px !important;
   }
 }
 
@@ -14,13 +14,13 @@
   align-items: center;
   flex-direction: row;
   height: 40px;
-  position: fixed;
+  position: absolute;
   top: 0;
   right: 0;
-  z-index: 10;
+  z-index: 21;
   background-color: #FFFFFF; 
-  opacity: 0.4;
-  padding: 20px;
+  opacity: 0.6;
+  padding: 10px;
   box-shadow: 0 4px 0 rgba(0, 0, 0, 0.1); 
   border-radius: 0.25rem;
   letter-spacing: -2px;
@@ -54,7 +54,7 @@ a.active {
 .mr-sm-2 {
   display: flex;
   align-items: center; 
-  margin:  0 auto;
+  margin:  10px;
   max-width: 300px;
   width: 400px !important;
 }
@@ -81,4 +81,8 @@ a.active {
               -4px -4px 6px 0 rgba(116, 125, 136, 0.5), 
               inset -4px -4px 6px 0 rgba(255, 255, 255, 0.2),
               inset 4px 4px 6px 0 rgba(0, 0, 0, 0.4);
+}
+
+.navbar-expand{
+background-color: transparent;
 }

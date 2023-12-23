@@ -1,40 +1,37 @@
-import React from 'react';
-import { Spinner, Row, Col } from 'react-bootstrap';
-import Container from 'react-bootstrap/Container';
+import React, { useEffect } from 'react';
+import { useFetchPets } from '../../context/FetchPetsContext';
 import PetCard from '../PetCard/PetCard';
-import InfiniteScroll from 'react-infinite-scroll-component';
-import { FetchPetsProvider, useFetchPets } from '../../context/FetchPetsContext.jsx';
+import './SearchFeed.css';
 
-export default function SearchFeed({ selectedCategory }) {
+export default function SearchFeed({ items }) {
+  const { petsData, loading, error, fetchPetsData } = useFetchPets();
+
+  console.log('petsData:', petsData);
+
+  useEffect(() => {
+    console.log('useEffect is running');
+  }, [petsData, loading]);
+
+  const uniquePetsData = petsData.reduce((uniquePets, pet) => {
+    const existingPet = uniquePets.find((p) => p.id === pet.id);
+    if (!existingPet) {
+      uniquePets.push(pet);
+    }
+    return uniquePets;
+  }, []);
+
   return (
-    <FetchPetsProvider selectedCategory={selectedCategory}>
-      <SearchFeedContent />
-    </FetchPetsProvider>
-  );
-}
-
-function SearchFeedContent() {
-  const { petsData, loading, hasMore, fetchPetsData } = useFetchPets(selectedCategory);
-
-  return (
-    <Container className='searchfeed-container'>
-      <InfiniteScroll
-        dataLength={petsData.length}
-        next={fetchPetsData}
-        hasMore={hasMore}
-        loader={<Spinner />}
-        endMessage={<p>No more pets to show</p>}
-      >
-        <Row xs={1} md={2} lg={4} className='g-4'>
-          {petsData
-            .filter(pet => pet.photos && pet.photos.length > 0)
-            .map((pet, index) => (
-              <Col key={`${pet.id}-${index}`} className='mb-4'>
-                <PetCard pet={pet} />
-              </Col>
-            ))}
-        </Row>
-      </InfiniteScroll>
-    </Container>
+    <div className='search-feed-wrapper'>
+      {loading && <p>Loading...</p>}
+      {error && <p>Error loading pets. Please try again later.</p>}
+      <div className="pet-cards-container">
+        {uniquePetsData.map((pet) => (
+          <PetCard key={pet.id} pet={pet} />
+        ))}
+      </div>
+      {/* <button onClick={fetchPetsData} disabled={loading}>
+        {loading ? 'Loading...' : 'Load More'}
+      </button> */}
+    </div>
   );
 }

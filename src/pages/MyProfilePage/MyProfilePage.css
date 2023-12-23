@@ -1,46 +1,74 @@
 .profile-page-container {
-    background: #F2921D url('../../styles/backgrounds/splendid-dog-looking-away-with-copy-space.jpg') no-repeat;
-    background-size: cover;
-    background-position: center;
-    background-attachment: fixed;
-    height: 100vh;
-    margin: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-family: 'Space Mono', monospace;
-  }
+  background: url('../../styles/backgrounds/myprofile-page-background.jpg') no-repeat;
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+}
 
-  form{
-    margin-left: 0%;
-    position: sticky;
-  }
+.edit-profile-container {
+  height: 100vh;
+  width: 400px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Space Mono', monospace;
+}
 
-  input{
-    border-radius: 0.25rem;
-    box-shadow: 0 2px 4px #8C4303;
-    border: none;
-  }
+input,
+textarea {
+  border-radius: 0.25rem;
+  outline: #8C4303;
+  border: none;
+  margin-bottom: 20px;
+  box-shadow: 0 2px 4px #8C4303;
+  width: 100%; 
+}
 
-  label{
-    position: fixed;
-    padding: 10px;
-  }
+textarea {
+  width: 100%;
+  height: 200px !important;
+}
 
-  textarea{
-    border-radius: 0.25rem;
-    width: 364px;
-    height: 300px !important;
-    box-shadow: 0 2px 4px #8C4303;
-    border: none;
-  }
+.edit-profile-page-btn {
+  border-radius: 0.25rem;
+  border: none;
+  box-shadow: 0 2px 4px #8C4303;
+  width: 100%;
+  height: 40px;
+  margin-top: 10px;
+  transition: background-color 0.3s ease;
+  letter-spacing: -1px;
+  color: #FFFFFF;
+  font-weight: 600;
+  background-color: #F25F29;
+}
 
-  .edit-profile-page-btn{
-    border-radius: 0.25rem;
-    background-color: #F28D8D;
-    border: none;
-    box-shadow: 0 2px 4px #8C4303;
-    width: 364px;
-    height: 40px;
-    margin-top: 10px;
-  }
+.edit-profile-page-btn:hover {
+  background-color: #8C4303;
+  cursor: pointer;
+}
+
+h2 {
+  font-size: 1.4rem;
+  font-weight: 600;
+  letter-spacing: -1px;
+  color: #8C4303;
+  font-weight: 600;
+}
+
+label {
+  display: block;
+  margin-bottom: 5px;
+  letter-spacing: -1px;
+  color: #8C4303;
+}
+
+.success-edit-profile-msg{
+  top: 20%;
+  left: 5%;;
+  justify-content: center;
+  font-family: 'Space Mono', monospace;
+  position: absolute;
+}

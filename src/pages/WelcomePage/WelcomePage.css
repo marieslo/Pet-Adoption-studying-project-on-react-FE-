@@ -1,28 +1,29 @@
 .welcome-page-container {
   position: absolute;
-  background-image: url('../../styles/backgrounds/happy-woman-with-dog.jpg');
-  background-size: auto 100%;
-  background-repeat: no-repeat;
+  background-image: url('../../styles/backgrounds/welcome-page-background.jpg');
+  background-size: contain;
   background-position: center;
-  width: 100vw;
-  height: 100vh;
-  z-index: 5;
+  background-color: #ffcc4c;
+  background-repeat: no-repeat;
+  bottom: 0%;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
 }
 
 .wrapper-for-header-welcometext-and-search-btn {
   display: flex;
   flex-direction: column;
-  align-items: start;
+  align-items: center;
   justify-content: center;
   position: absolute;
-  top: 10%;
-  left: 3%;
-  z-index: 9; 
+  top: 50%; 
+  left: 10%;
+  transform: translateY(-50%); 
+  z-index: 8; 
 }
 
 .welcome-text {
-  position: relative;
-  top: 80px;
   width: 500px;
   min-width: 300px;
   font-size: 1.4rem;
@@ -32,41 +33,29 @@
   color: #593202;
   text-align: center;
   text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  margin-bottom: 40px;
+  margin-top: 100px;
+  margin-bottom: 400px;
 }
 
-.search-button {
-  position: relative;
-  font-family: 'Space Mono', monospace;
-  background: linear-gradient(0deg, #FFC539 0%,#F25D27 100%);
-  border: none;
-  border-radius: 0.25rem;
-  margin-top: 600px;
-  margin-left: 6rem;
-  width: fit-content;
-  min-height: 60px;
-  height: fit-content;
-  color: #FFFFFF;
-  font-size: 2rem;
-  font-weight: 600;
-  letter-spacing: -2px;
-  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+.category-cards-container {
+  display: flex;
+  flex-direction: row; 
+  justify-content: space-around;
+  align-items: center;
   position: absolute;
-  padding: 0 10px 0 10px;
+  flex-wrap: wrap;
+  top: 80%;
+  left: 15%;
+  transform: translateY(-50%);
+  letter-spacing: -2px;
+  line-height: 1.1;
+  font-family: 'Space Mono', monospace;
+  z-index: 100;
 }
 
-
-.search-button:hover {
-  transform-origin: bottom center;
-  animation: wagTail 0.3s infinite alternate;
-}
-
-@keyframes wagTail {
-  100% {
-    transform: rotate(-2deg);
-  }
-  100% {
-    transform: rotate(2deg);
-  }
+.random-pets-container{
+  width: 660px;
+  top: 60%;
+  left: 3%;
+  position: absolute;
 }

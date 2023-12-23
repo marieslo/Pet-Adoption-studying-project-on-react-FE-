@@ -1,3 +1,11 @@
-.searchfeed-container{
-    margin-top: 200px;
-}
+.pet-cards-container {
+    display: flex;
+    flex-wrap: nowrap;
+    overflow-x: auto; 
+  }
+  
+  .pet-card-container {
+    flex: 0 0 auto;
+    margin-right: 10px;
+  }
+  
