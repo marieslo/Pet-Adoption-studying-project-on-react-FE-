@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import localforage from 'localforage';
+import { useAuth } from '../../context/AuthProvider.jsx';
 
 export default function EditProfileForm({ onSave, initialData }) {
+  const { updateUser } = useAuth();
   const [formData, setFormData] = useState({
     email: '',
     password: '',
@@ -9,6 +11,7 @@ export default function EditProfileForm({ onSave, initialData }) {
     lastName: '',
     phoneNumber: '',
     shortBio: '',
+    ...initialData,
   });
 
   const [successMessage, setSuccessMessage] = useState('');
@@ -25,6 +28,9 @@ export default function EditProfileForm({ onSave, initialData }) {
     await onSave(formData);
     setSuccessMessage('Your profile updated successfully');
     console.log('Success message set:', successMessage);
+
+
+    updateUser(formData);
   };
 
   return (
@@ -93,7 +99,6 @@ export default function EditProfileForm({ onSave, initialData }) {
         </button>
       </form>
     </div>
-   
     </>
   );
 }

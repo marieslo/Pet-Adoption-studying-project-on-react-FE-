@@ -1,4 +1,4 @@
-import { createContext, useContext, useState, useEffect } from 'react';
+import React, { createContext, useContext, useState, useEffect } from 'react';
 import localforage from 'localforage';
 
 const AuthContext = createContext();
@@ -22,9 +22,9 @@ export const AuthProvider = ({ children }) => {
   }, []);
 
   const login = async (userData) => {
-    const { email, password, firstName, lastName, phoneNumber } = userData;
+    const { email, password, firstName, lastName, phoneNumber, isAdmin } = userData;
     const storedUser = await localforage.getItem('user');
-    const newUser = { email, password, firstName, lastName, phoneNumber };
+    const newUser = { email, password, firstName, lastName, phoneNumber, isAdmin };
 
     const updatedUser = storedUser ? { ...storedUser, ...newUser } : newUser;
 
@@ -37,10 +37,15 @@ export const AuthProvider = ({ children }) => {
     await localforage.removeItem('user');
   };
 
+  const isAdmin = () => {
+    return user && user.isAdmin;
+  };
+
   const authContextValue = {
     user,
     login,
     logout,
+    isAdmin,
   };
 
   return (

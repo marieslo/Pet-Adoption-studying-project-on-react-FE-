@@ -48,8 +48,6 @@ input.form-control:focus {
   font-size: 16px;
 }
 
-mo
-
 .modal-header, .modal-body, .modal-footer {
   background-color: transparent; 
 }
@@ -88,4 +86,50 @@ mo
   color: #495057;
   background-color: #f8f9fa;
   border-color: #dee2e6 #dee2e6 #f8f9fa;
+}
+
+.checkbox-label {
+  position: relative;
+  display: inline-block;
+  top: 15px;
+}
+
+.form-checkput-input {
+  position: relative;
+  top: 10px;
+}
+
+#isAdminCheckbox {
+  position: relative;
+  top: 0;
+  left: 0;
+  right: 10;
+  width: 20px !important;
+  height: 20px !important; 
+  background-color: #F2CEA2;
+  border: 1px solid #F25F29;
+  cursor: pointer;
+}
+
+.form-checkput-input:after {
+  content: '';
+  display: none;
+  position: relative;
+  left: 7px; 
+  top: 4px;
+  width: 5px; 
+  height: 10px; 
+  border: solid #F25F29;
+  border-width: 0 3px 3px 0;
+  transform: rotate(45deg);
+}
+
+.checkbox-input:checked + .checkbox-checkmark:after {
+  display: block;
+}
+
+.invalid {
+  border: 2px solid red !important;
+  border-radius: 0.25rem;
+  width: 369px;
 }

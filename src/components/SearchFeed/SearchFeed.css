@@ -2,6 +2,7 @@
     display: flex;
     flex-wrap: nowrap;
     overflow-x: auto; 
+    width: 90%;
   }
   
   .pet-card-container {
@@ -9,3 +10,13 @@
     margin-right: 10px;
   }
   
+  .searchfeed-fragment-container {
+    position: relative;
+    width: 650px !important;
+    text-align: center;
+    display: flex;
+    flex-direction: row;
+    white-space: wrap; 
+    overflow-x: scroll; 
+    scrollbar-width: thin;
+  }

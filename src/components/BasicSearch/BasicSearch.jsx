@@ -30,12 +30,12 @@ export default function BasicSearch({ onSearch }) {
           Search
         </Button>
       </div>
-      <div className='category-cards-container-basic-search'>
-        <SearchCategoryCard category="Dogs" onClick={() => onSearch('dog')} />
-        <SearchCategoryCard category="Cats" onClick={() => onSearch('cat')} />
+      <div className='category-cards-container'>
+        <SearchCategoryCard category="Dogs" onClick={() => onSearch({ type: 'dog' })} />
+        <SearchCategoryCard category="Cats" onClick={() => onSearch({ type: 'cat' })} />
         <SearchCategoryCard
           category="Other Animals"
-          onClick={() => onSearch('other animals')}
+          onClick={() => onSearch({ type: 'other animals' })}
         />
       </div>
     </div>

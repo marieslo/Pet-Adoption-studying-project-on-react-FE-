@@ -14,9 +14,8 @@
   box-shadow: 0 2px 4px #8C4303;
   z-index: 100;
   padding: 20px;
-  top: 45%;
-  left: 80%;
-  bottom: 0%;
+  top: 82%;
+  left: 20%;
   transition: transform 0.3s ease;
   background: radial-gradient(circle at 60px 20px,#eb59fb, #f14400);
 }

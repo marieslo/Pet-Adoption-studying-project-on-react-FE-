@@ -1,3 +1,20 @@
-.single-pet-card-container{
+.single-pet-card-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
     background-color: #F2AE2E;
-}
+  }
+  
+  .single-page-pet-card {
+    width: 60%;
+    font-family: 'Space Mono', monospace;
+    color: #8C4303;
+    font-size: 16px;
+    font-weight: 300;
+    letter-spacing: -2px;
+    margin-top: 100px;
+    border-radius: 0.25rem;
+    background-color: #f9e1b6;
+    box-shadow: 0 2px 4px #8C4303;
+  }

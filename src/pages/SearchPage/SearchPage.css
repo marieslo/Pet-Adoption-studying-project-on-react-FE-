@@ -1,3 +1,10 @@
+/* @media (max-width: 768px) {
+  .category-cards-container {
+    margin-top: -50px !important;
+    margin-left: 10px !important; 
+  }
+} */
+
 .search-page-container {
   background-color: #F2AE2E;
   background-size: cover;
@@ -16,8 +23,9 @@
 
 .search-page-searchfeed-container {
   margin-top: 20px;
+  margin-left: 40px;
   position: relative;
-  width: 100%;
+  width: 90%;
   text-align: center;
   display: flex;
   flex-direction: row;

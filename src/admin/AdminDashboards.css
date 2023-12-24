@@ -1,0 +1,28 @@
+.admin-dashboard-container {
+    padding: 60px;
+    background-color: #BAD9D6;
+    background-size: cover;
+    position: relative;
+    min-height: 100vh; 
+    max-height: fit-content;
+    min-width: 100vw; 
+    max-width: fit-content;
+    display: flex;
+    flex-direction: column;
+    border-radius: 0.25rem;
+    letter-spacing: -0.5px;
+    font-family: 'Space Mono', monospace;
+    font-size: 14px;
+    z-index: 20;
+}
+
+  h2 {
+    color: #593202;
+  }
+
+  .admin-dashboard-btn{
+    font-size: 14px !important;
+    height: 30px !important;
+    padding: 3px 5px 15px 5px;
+    margin: 5px;
+  }

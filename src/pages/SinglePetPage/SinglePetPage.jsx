@@ -1,10 +1,15 @@
 import React from 'react';
+import { useParams } from 'react-router-dom';
 import { Card, Button } from 'react-bootstrap';
 import './SinglePetPage.css';
+import fakePetsData from '../../fakepetsdata/fakepetsdata.json';
 
-export default function SinglePetPage({ pet, isOwner, isFostered, isAdopted, onSaveToggle }) {
-  if (!pet) {
-    return <div>Loading...</div>; 
+export default function SinglePetPage() {
+  const { id } = useParams();
+  const petData = fakePetsData.petsData.find((pet) => pet.id === parseInt(id, 10));
+
+  if (!petData) {
+    return <div>Loading...</div>;
   }
 
   const {
@@ -19,7 +24,11 @@ export default function SinglePetPage({ pet, isOwner, isFostered, isAdopted, onS
     hypoallergenic,
     dietaryRestrictions,
     breed,
-  } = pet;
+  } = petData;
+
+  const isOwner = false; 
+  const isFostered = false; 
+  const isAdopted = false;
 
   const handleAdoptClick = () => {
     console.log(`Adopt ${name}`);
@@ -33,18 +42,25 @@ export default function SinglePetPage({ pet, isOwner, isFostered, isAdopted, onS
     console.log(`Return ${name}`);
   };
 
+  const handleSaveToggle = () => {
+    console.log(`Save/Unsave ${name}`);
+  };
+
   return (
     <div className='single-pet-card-container'>
-      <Card className='pet-card'>
+      <Card className='single-page-pet-card'>
+        
+
+        <Card.Body>
         <div className="custom-frame">
           <Card.Img
             variant="top"
             src={image}
             alt={`Image of ${name}`}
-            className="card-img" 
+            className="card-img"
+            onLoad={() => console.log('Image loaded')}
           />
-        </div>
-        <Card.Body>
+          </div>
           <Card.Title>{name}</Card.Title>
           <Card.Text>Type: {type}</Card.Text>
           <Card.Text>Status: {status}</Card.Text>
@@ -73,10 +89,10 @@ export default function SinglePetPage({ pet, isOwner, isFostered, isAdopted, onS
               )}
             </>
           )}
-
-          <Button variant="secondary" onClick={onSaveToggle}>
+          <Button variant="secondary" onClick={handleSaveToggle}>
             {isAdopted ? 'Unsave' : 'Save for Later'}
           </Button>
+          
         </Card.Body>
       </Card>
     </div>

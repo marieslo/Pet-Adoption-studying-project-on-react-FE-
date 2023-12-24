@@ -1,13 +1,11 @@
 import React, { createContext, useContext, useState, useEffect, useCallback } from 'react';
-import petsData from '../fakepetsdata/fakepetsdata.json';
+import fakePetsData from '../fakepetsdata/fakepetsdata.json';
 
 const FetchPetsContext = createContext();
 
 export const useFetchPets = () => {
   return useContext(FetchPetsContext);
 };
-
-import fakePetsData from '../fakepetsdata/fakepetsdata.json';
 
 export const useFetchPetsData = () => {
   return Promise.resolve(fakePetsData);
@@ -38,10 +36,10 @@ export const FetchPetsProvider = ({ children }) => {
     }
   }, [page]);
 
-  useEffect(() => {
-    console.log('useEffect is running');
-    fetchPetsData();
-  }, [fetchPetsData, page]);
+useEffect(() => {
+  console.log('useEffect is running');
+  fetchPetsData();
+}, []);
 
   const value = {
     petsData,

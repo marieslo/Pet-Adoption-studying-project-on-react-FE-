@@ -21,11 +21,11 @@
   z-index: 5;
 }
 
-
 .home-page-call-to-action {
   font-family: 'Space Mono', monospace;
-  margin-top: 150px;
+  margin-top: 200px;
   margin-left: 150px;
+  margin-bottom: 100px;
   width: 400px;
   font-size: 1.2rem;
   color: #593202;

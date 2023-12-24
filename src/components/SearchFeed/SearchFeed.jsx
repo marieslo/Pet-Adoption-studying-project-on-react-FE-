@@ -8,10 +8,6 @@ export default function SearchFeed({ items }) {
 
   console.log('petsData:', petsData);
 
-  useEffect(() => {
-    console.log('useEffect is running');
-  }, [petsData, loading]);
-
   const uniquePetsData = petsData.reduce((uniquePets, pet) => {
     const existingPet = uniquePets.find((p) => p.id === pet.id);
     if (!existingPet) {
@@ -23,15 +19,11 @@ export default function SearchFeed({ items }) {
   return (
     <div className='search-feed-wrapper'>
       {loading && <p>Loading...</p>}
-      {error && <p>Error loading pets. Please try again later.</p>}
       <div className="pet-cards-container">
         {uniquePetsData.map((pet) => (
           <PetCard key={pet.id} pet={pet} />
         ))}
       </div>
-      {/* <button onClick={fetchPetsData} disabled={loading}>
-        {loading ? 'Loading...' : 'Load More'}
-      </button> */}
     </div>
   );
 }
