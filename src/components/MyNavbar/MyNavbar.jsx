@@ -26,6 +26,11 @@ export default function MyNavbar() {
 
   const isAdmin = user && user.isAdmin;
 
+  const activeLinkStyle = {
+    color: '#FF0000', 
+    fontWeight: 'bold', 
+  };
+
   return (
     <Navbar className="nav" expand="md">
       <Navbar.Toggle aria-controls="basic-navbar-nav" />
@@ -33,26 +38,42 @@ export default function MyNavbar() {
       <Navbar.Collapse id="basic-navbar-nav" className="justify-content-start">
         <Nav className="mr-auto">
           {!isAdmin && location.pathname !== '/' && (
-            <NavLink to="/" className="nav-link" activeClassName="active">
+            <NavLink to="/" className="nav-link">
               Back
             </NavLink>
           )}
 
           {user && (
             <>
-              <NavLink to="/home" className="nav-link" activeClassName="active">
+              <NavLink
+                to="/home"
+                className="nav-link"
+                style={location.pathname === '/home' ? activeLinkStyle : {}}
+              >
                 Home
               </NavLink>
 
-              <NavLink to="/profile" className="nav-link" activeClassName="active">
+              <NavLink
+                to="/profile"
+                className="nav-link"
+                style={location.pathname === '/profile' ? activeLinkStyle : {}}
+              >
                 My Profile
               </NavLink>
 
-              <NavLink to="/mypets" className="nav-link" activeClassName="active">
+              <NavLink
+                to="/mypets"
+                className="nav-link"
+                style={location.pathname === '/mypets' ? activeLinkStyle : {}}
+              >
                 My Pets
               </NavLink>
 
-              <NavLink to="/search" className="nav-link" activeClassName="active">
+              <NavLink
+                to="/search"
+                className="nav-link"
+                style={location.pathname === '/search' ? activeLinkStyle : {}}
+              >
                 Search
               </NavLink>
             </>
@@ -60,11 +81,19 @@ export default function MyNavbar() {
 
           {isAdmin && user && (
             <>
-              <NavLink to="/petsdashboard" className="nav-link admin-link" activeClassName="active">
+              <NavLink
+                to="/petsdashboard"
+                className="nav-link admin-link"
+                style={location.pathname === '/petsdashboard' ? activeLinkStyle : {}}
+              >
                 Pets' Dashboard
               </NavLink>
 
-              <NavLink to="/usersdashboard" className="nav-link admin-link" activeClassName="active">
+              <NavLink
+                to="/usersdashboard"
+                className="nav-link admin-link"
+                style={location.pathname === '/usersdashboard' ? activeLinkStyle : {}}
+              >
                 Users' Dashboard
               </NavLink>
             </>

@@ -2,12 +2,20 @@ import React, { useState, useEffect } from 'react';
 import { Table, Button, Modal, Form } from 'react-bootstrap';
 import localforage from 'localforage';
 import './AdminDashboards.css';
+import PetsOwners from './PetsOwners';
+import { useMyPetsContext } from '../context/MyPetsProvider';
+import { useUserProfiles } from '../context/UserProfilesContext';
 
 export default function UsersDashboard() {
+  const { userProfiles } = useUserProfiles();
   const [users, setUsers] = useState([]);
   const [showConfirmationModal, setShowConfirmationModal] = useState(false);
+  const [showDeleteWarningModal, setShowDeleteWarningModal] = useState(false);
+  const [showUserPetsModal, setShowUserPetsModal] = useState(false);
   const [selectedUser, setSelectedUser] = useState(null);
   const [selectedUserRole, setSelectedUserRole] = useState('user');
+  
+  const { adoptedPets, fosteredPets } = useMyPetsContext();
 
   useEffect(() => {
     const fetchUsers = async () => {
@@ -28,8 +36,26 @@ export default function UsersDashboard() {
     setShowConfirmationModal(true);
   };
 
-  const handleConfirmDelete = async () => {
+  const handleConfirmDelete = () => {
+    setShowDeleteWarningModal(true);
+  };
+
+  const handleUserPetsClick = (user) => {
+    setSelectedUser(user);
+    setShowUserPetsModal(true);
+  };
+
+  const handleDeleteUserClick = (user) => {
+    setSelectedUser(user);
+    setShowDeleteWarningModal(true);
+  };
+
+  const handleDeleteUser = async () => {
     try {
+      if (!selectedUser || !selectedUser.id) {
+        console.error('Invalid user or user ID');
+        return;
+      }
       await localforage.removeItem(`userPets_${selectedUser.id}`);
       const updatedUsers = users.filter((user) => user.id !== selectedUser.id);
       await localforage.setItem('registeredUsers', updatedUsers);
@@ -37,6 +63,7 @@ export default function UsersDashboard() {
     } catch (error) {
       console.error('Error deleting user:', error);
     } finally {
+      setShowDeleteWarningModal(false);
       setShowConfirmationModal(false);
     }
   };
@@ -58,14 +85,19 @@ export default function UsersDashboard() {
     setShowConfirmationModal(false);
   };
 
-  const handleCloseModal = () => {
+  const handleCloseModals = () => {
     setShowConfirmationModal(false);
+    setShowDeleteWarningModal(false);
+    setShowUserPetsModal(false);
   };
 
   return (
     <div className='admin-dashboard-container'>
-      <h2>Users</h2>
-      <Table striped bordered hover>
+      <div className="dashboard-header">
+        <h2>Users</h2>
+        <span className='dashboard-counter'>Total Users: {users.length}</span>
+      </div>
+      <Table striped bordered hover className="custom-table">
         <thead>
           <tr>
             <th>ID</th>
@@ -88,9 +120,15 @@ export default function UsersDashboard() {
               <td>{user.phoneNumber}</td>
               <td>{user.shortBio}</td>
               <td>{user.role || 'user'}</td>
-              <td>
-                <Button variant="warning" className='admin-dashboard-btn' onClick={() => handleUserClick(user)}>
-                  Edit
+              <td className="d-flex">
+                <Button variant="secondary" className='admin-dashboard-btn mr-2' onClick={() => handleUserClick(user)}>
+                  Change role
+                </Button>
+                <Button variant="secondary" className='admin-dashboard-btn mr-2' onClick={() => handleUserPetsClick(user)}>
+                  View Pets
+                </Button>
+                <Button variant="secondary" className='admin-dashboard-btn' onClick={() => handleDeleteUserClick(user)}>
+                  Delete
                 </Button>
               </td>
             </tr>
@@ -98,7 +136,7 @@ export default function UsersDashboard() {
         </tbody>
       </Table>
 
-      <Modal show={showConfirmationModal} onHide={handleCloseModal}>
+      <Modal show={showConfirmationModal} onHide={handleCloseModals}>
         <Modal.Header closeButton>
           <Modal.Title>Edit</Modal.Title>
         </Modal.Header>
@@ -112,13 +150,41 @@ export default function UsersDashboard() {
           </Form.Group>
         </Modal.Body>
         <Modal.Footer>
-          <Button variant="success" className='admin-dashboard-btn' onClick={handleSaveRole}>
-            Save Role
-          </Button>
-          <Button variant="danger" className='admin-dashboard-btn' onClick={handleConfirmDelete}>
-            Delete User
+          <Button variant="secondary" className='admin-dashboard-btn' onClick={handleSaveRole}>
+            Save Changes
           </Button>
         </Modal.Footer>
+      </Modal>
+
+      <Modal show={showDeleteWarningModal} onHide={handleCloseModals}>
+        <Modal.Header closeButton>
+          <Modal.Title>Delete User</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          Are you sure you want to delete {selectedUser && selectedUser.email}?
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={handleCloseModals}>
+            Cancel
+          </Button>
+          <Button variant="secondary" onClick={handleDeleteUser}>
+            Delete
+          </Button>
+        </Modal.Footer>
+      </Modal>
+      <Modal show={showUserPetsModal} onHide={handleCloseModals}>
+        <Modal.Header closeButton>
+          <Modal.Title>User Pets</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          {selectedUser && (
+            <PetsOwners
+              userId={selectedUser.id}
+              adoptedPets={adoptedPets}
+              fosteredPets={fosteredPets}
+            />
+          )}
+        </Modal.Body>
       </Modal>
     </div>
   );

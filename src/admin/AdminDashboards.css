@@ -1,28 +1,148 @@
 .admin-dashboard-container {
-    padding: 60px;
-    background-color: #BAD9D6;
-    background-size: cover;
-    position: relative;
-    min-height: 100vh; 
-    max-height: fit-content;
-    min-width: 100vw; 
-    max-width: fit-content;
-    display: flex;
-    flex-direction: column;
-    border-radius: 0.25rem;
-    letter-spacing: -0.5px;
-    font-family: 'Space Mono', monospace;
-    font-size: 14px;
-    z-index: 20;
+  padding: 60px;
+  background: 
+    linear-gradient(to bottom, #837364, #D7C3B8);
+  position: relative;
+  min-height: 100vh;
+  max-height: fit-content;
+  min-width: 100vw;
+  max-width: fit-content;
+  display: flex;
+  flex-direction: column;
+  border-radius: 0.25rem;
+  font-family: 'Gotu', sans-serif;
+  font-size: 14px;
+  z-index: 20;
+  overflow-x: auto;
 }
 
-  h2 {
-    color: #593202;
-  }
+h2 {
+  color: #593202;
+}
 
-  .admin-dashboard-btn{
-    font-size: 14px !important;
-    height: 30px !important;
-    padding: 3px 5px 15px 5px;
-    margin: 5px;
-  }
+.admin-dashboard-btn {
+  font-size: 14px !important;
+  height: 30px !important;
+  padding: 0px 5px;
+  margin: 10px;
+  width: fit-content !important;
+  font-family: 'Gotu', sans-serif;
+  font-size: 14px;
+}
+
+.filter-input {
+  width: 100%;
+  padding: 5px;
+  font-size: 14px;
+  margin: 5px;
+}
+
+.add-pet-form-container {
+  width: 80%;
+  margin: auto;
+}
+
+.add-pet-form {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.add-pet-form label {
+  margin-bottom: 10px;
+}
+
+.add-pet-form select,
+.add-pet-form input,
+.add-pet-form textarea {
+  width: 100%;
+  padding: 8px;
+  margin-bottom: 15px;
+  box-sizing: border-box;
+}
+
+.radio-choice {
+  height: fit-content !important;
+  width: fit-content !important;
+  border-radius: 50% !important;
+  border: none;
+  background-color: transparent;
+  box-shadow: none;
+  margin-right: 10px;
+  margin-left: 10px;
+}
+
+.left-label {
+  font-weight: 300;
+  padding-right: 20px !important;
+}
+
+.add-pet-form-part1,
+.add-pet-form-part2 {
+  display: flex;
+  flex-direction: column;
+}
+
+h2 {
+  margin-bottom: 20px;
+}
+
+.add-pet-button {
+  background-color: green !important;
+  font-size: 14px !important;
+  padding: 5px 5px 5px 5px !important;
+  margin: 5px;
+  width: 360px;
+  height: 38px;
+}
+
+.admin-success-message {
+  background-color: transparent !important;
+  border: solid #45a049;
+  color: #8C4303;
+  padding: 15px;
+  border-radius: 0.25rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 20px;
+  position: absolute;
+  bottom: 0;
+  left: 10%;
+  right: 10%;
+  width: 80vw;
+  display: flex;
+  flex-direction: column;
+}
+
+textarea {
+  height: 230px !important;
+  width: 364px;
+}
+
+.pet-dashboard-btns {
+  display: flex;
+  align-items: center;
+}
+
+.pet-dashboard-btns .admin-dashboard-btn {
+  font-size: 14px;
+  height: 30px;
+  padding: 3px 10px; 
+  margin: 10px;
+}
+
+.user-pets-page-container{
+  font-family: 'Italiana', sans-serif;
+  font-size: 14px;
+}
+
+.dashboard-counter{
+  margin: 10px;
+  padding: 10px;
+}
+
+.custom-table th,
+.custom-table td {
+  background-color: #D9C5C1;
+}

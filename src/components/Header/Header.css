@@ -3,15 +3,14 @@ h1 {
     height: fit-content;
     width: fit-content;
     text-align: center;
-    font-family: 'Rubik Bubbles';
-    font-size: 2rem;
+    font-family: 'Gotu', sans-serif;
+    letter-spacing: -2px;
+    font-size: 50px;
     line-height: 1;
     text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     left: 50px;
     top: 80px;
     bottom: 0;
-    background: linear-gradient(to right, #ee5353, #F25F29) text;
-    color: transparent;
-    background-color: transparent;
+    color: #87152a;
     z-index: 10;
   }

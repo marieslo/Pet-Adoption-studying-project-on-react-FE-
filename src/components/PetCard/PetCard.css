@@ -5,25 +5,25 @@
   align-items: center;
   height: 300px;
   width: fit-content;
-  font-family: 'Montserrat Alternates', sans-serif;
-  color: #8C4303;
-  margin: 10px;
-}
-
-.custom-frame {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 200px;
-  height: 200px;
-  overflow: hidden;
-  border-radius: 0.25rem; 
+  margin-left: 5px;
+  margin-right: 5px;
+  font-family: 'Gotu', sans-serif;
+  letter-spacing: -1px;
+  position: relative;
 }
 
 .card-img {
   object-fit: cover;
   max-width: 190px;
-  height: 150px;
+  min-height: 190px;
+  margin: 2px 2px 2px 2px !important;
+}
+
+.card-title {
+  line-height: 0.5px;
+  margin-top: 0px;
+  color: #401e12 !important;
+  font-size: 20px !important;
 }
 
 .pet-card {
@@ -31,23 +31,31 @@
   height: 300px;
   border: none;
   border-radius: 0.25rem;
-  background-color: #f9e1b6;
-  box-shadow: 0 2px 4px #8C4303;
-  color: #8C4303;
+  background-color: #d9c5c1;
+  box-shadow: 0 2px 4px #8c4e37;
+  color: #401e12;
+  font-family: 'Gotu', sans-serif;
+  letter-spacing: -1px;
+  text-shadow: 0 2px 4px #8c4e37 (0, 0, 0, 0.1);
+  position: relative; 
+  margin-bottom: 0px;
 }
 
 .pet-card-btn {
-  font-size: 16px; 
-  color: #8C4303;
-  font-family: 'Montserrat Alternates', sans-serif !important;
-  border: solid 1px #FFFFFF;
+  font-size: 16px;
+  color: #401e12;
+  font-family: 'Gotu', sans-serif;
+  letter-spacing: -1px;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  border: solid 1px #d9c5c1;
   border-radius: 0.25rem;
-  box-shadow: 0 2px 4px #8C4303;
+  box-shadow: 0 2px 4px #8c4303;
   background-color: transparent;
   position: absolute;
-  bottom: 0;
-  left: 0;
-  margin: 10px;
+  top: 85%;
+  right: 5px;
+  margin: 5px !important;
+  line-height: 30px !important;
 }
 
 .like-btn {
@@ -56,16 +64,39 @@
   width: 50px;
   height: 50px;
   position: absolute;
-  bottom: 0;
-  right: 10px;
+  top: 65%;
+  right: 5px;
 }
 
 .like-icon {
-  width: 100%;
-  height: 100%;
+  width: 80%;
+  height: 80%;
   object-fit: contain;
 }
 
 .unlike-icon {
   filter: grayscale(100%);
+}
+
+.alert-modal-ask-login {
+  box-shadow: 0 4px 0 rgba(0, 0, 0, 0.1);
+  border-radius: 0.25rem;
+  font-family: 'Gotu', sans-serif;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  position: fixed;
+  top: 70px;
+  right: 30px;
+}
+
+.btn-close {
+  background-color: transparent;
+  font-size: 12px;
+  padding: 2px;
+  height: fit-content;
+  width: fit-content;
+}
+
+.default-img {
+  width: 50px !important;
+  height: 50px !important;
 }

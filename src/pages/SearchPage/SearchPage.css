@@ -1,42 +1,20 @@
-/* @media (max-width: 768px) {
-  .category-cards-container {
-    margin-top: -50px !important;
-    margin-left: 10px !important; 
-  }
-} */
-
 .search-page-container {
-  background-color: #F2AE2E;
-  background-size: cover;
-  background-position: center;
+  background: 
+    linear-gradient(to bottom, #837364, #D7C3B8);
   height: 100vh;
   width: 100vw;
   margin: 0;
   display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: flex-end;
-  font-family: 'Space Mono', monospace;
-  position: relative;
-  overflow: hidden; 
-}
-
-.search-page-searchfeed-container {
-  margin-top: 20px;
-  margin-left: 40px;
-  position: relative;
-  width: 90%;
-  text-align: center;
-  display: flex;
   flex-direction: row;
-  white-space: nowrap; 
-  overflow-x: scroll; 
-  scrollbar-width: thin;
+  align-items: stretch;
+  justify-content: space-between;
+  font-family: 'Gotu', sans-serif;
+  letter-spacing: -1px;
+  position: relative;
+  overflow: hidden;
 }
 
-.search-page-options-container {
-  position: absolute;
-  top: 5%;
-  left: 5%;
-  transform: translateX(-50%);
-}
+/* .search-options-and-results-layout{
+  width: 70%;
+  margin: 0 auto;
+} */

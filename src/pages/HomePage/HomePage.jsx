@@ -1,23 +1,29 @@
 import React from 'react';
 import './HomePage.css';
 import { useAuth } from '../../context/AuthProvider';
-import SearchFeedFragment from '../../components/SearchFeed/SearchFeedFragment';
+import AdoptablePetsFeed from '../../components/AdoptablePetsFeed/AdoptablePetsFeed';
 
 export default function HomePage() {
   const { user } = useAuth();
 
   return (
-    <div className='home-page-container'>
-      <div className='home-page-greeting'>
+    <div className="home-page-container">
+      <div className="home-page-greeting">
         {user && (
-          <div className='home-page-call-to-action'>
-            <p>Welcome, {user.firstName} {user.lastName}!</p>
-            <p>Transform your life, adopt a furry friend today!</p>
+          <div className="home-page-call-to-action">
+            <p>
+              Glad to see you here, {user.firstName} {user.lastName}!
+              <br />
+              <br />Transform your life,
+              <br />adopt a furry friend today!
+              <br />
+              <br/> They need your love
+            </p>
           </div>
         )}
       </div>
-      <div className='home-page-searchfeed-container'>
-        <SearchFeedFragment />
+      <div className="home-page-allpetsfeed-container">
+        <AdoptablePetsFeed />
       </div>
     </div>
   );

@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import localforage from 'localforage';
-import { useAuth } from '../../context/AuthProvider.jsx';
+import { useUserProfiles } from '../../context/UserProfilesContext';
 
 export default function EditProfileForm({ onSave, initialData }) {
-  const { updateUser } = useAuth();
+  const { updateUserProfile } = useUserProfiles();
   const [formData, setFormData] = useState({
     email: '',
     password: '',
@@ -17,6 +17,7 @@ export default function EditProfileForm({ onSave, initialData }) {
   const [successMessage, setSuccessMessage] = useState('');
 
   useEffect(() => {
+    console.log('formData updated:', formData);
     setFormData(initialData);
   }, [initialData]);
 
@@ -24,23 +25,38 @@ export default function EditProfileForm({ onSave, initialData }) {
     const { name, value } = e.target;
     setFormData((prevData) => ({ ...prevData, [name]: value }));
   };
+
   const handleSave = async () => {
-    await onSave(formData);
-    setSuccessMessage('Your profile updated successfully');
-    console.log('Success message set:', successMessage);
+    try {
+      console.log('Saving profile:', formData);
 
+      const { email, id } = formData;
 
-    updateUser(formData);
-  };
+    updateUserProfile(id, formData);
+    onSave(formData);
+
+      const userLocalStorageKey = `userData_${email}`;
+      const existingUserData = await localforage.getItem(userLocalStorageKey);
+      const updatedUserData = { ...existingUserData, ...formData };
+      await localforage.setItem(userLocalStorageKey, updatedUserData);
+
+      setSuccessMessage('Your profile updated successfully');
+
+      onSave(updatedUserData);
+   } catch (error) {
+    console.error('Error saving profile:', error);
+    setSuccessMessage('Error updating your profile');
+  }
+};
 
   return (
     <>
-  <div className='success-edit-profile-msg'>
+      <div className='success-edit-profile-msg'>
         {successMessage && <p className="success-message">{successMessage}</p>}
-        </div>
-    <div className='edit-profile-container'>
-      <h2>Edit Profile</h2>
-      <form>
+      </div>
+      <div className='edit-profile-container'>
+        <h2>Edit Profile</h2>
+        <form>
         <div>
           <label>Email:</label>
           <input
@@ -95,10 +111,10 @@ export default function EditProfileForm({ onSave, initialData }) {
           />
         </div>
         <button className="edit-profile-page-btn" type="button" onClick={handleSave}>
-          Save
-        </button>
-      </form>
-    </div>
+            Save
+          </button>
+        </form>
+      </div>
     </>
   );
 }

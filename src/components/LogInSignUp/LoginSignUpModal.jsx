@@ -26,7 +26,7 @@ export default function LoginSignUpModal({ show, onHide, onSignup, onLogin }) {
     await localforage.setItem('registeredUsers', registeredUsers);
     await localforage.setItem('userData', userData);
     onHide();
-    // navigate('/home', { state: { firstName: userData.firstName, lastName: userData.lastName } });
+    navigate('/home');
   };
 
   const handleLogin = (userData) => {

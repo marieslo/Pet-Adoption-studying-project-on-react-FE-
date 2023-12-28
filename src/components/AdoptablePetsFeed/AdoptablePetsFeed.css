@@ -1,0 +1,33 @@
+.pet-cards-container {
+  display: flex;
+  flex-wrap: nowrap;
+  overflow-x: auto; 
+  width: 90%;
+}
+
+.pet-card-container {
+  flex: 0 0 auto;
+}
+
+.allpets-feed-fragment-container {
+  position: relative;
+  width: 630px !important;
+  text-align: center;
+  display: flex;
+  flex-direction: row;
+  white-space: wrap; 
+  overflow-x: scroll; 
+  scrollbar-width: thin;
+}
+
+.no-adoptable-pets-today{
+  font-size: 1.4rem;
+  line-height: 1.1;
+  font-family: 'Gotu', sans-serif;
+  letter-spacing: -1px;
+  color: #401E12;
+  text-align: center;
+  text-shadow: 0 2px 4px #401E12(0, 0, 0, 0.1);
+  margin-top: 150px;
+  margin-bottom: 20px;
+}

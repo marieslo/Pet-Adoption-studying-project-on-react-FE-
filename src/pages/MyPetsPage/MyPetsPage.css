@@ -1,20 +1,78 @@
-.my-pets-page-container{
-    background: url('../../styles/backgrounds/mypets-page-background.jpg') no-repeat;
-    background-size: cover;
-    background-position: center;
-    background-attachment: fixed;
-    height: 100vh;
-    margin: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-family: 'Space Mono', monospace;
-  }
+.my-pets-page-container {
+  background: linear-gradient(to bottom, #837364, #D7C3B8);
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+}
 
-  .msg-if-no-pets{
-    font-family: 'Space Mono', monospace;
-    margin: 0 auto;
-    font-size: 1.4rem;
-    color: #593202;
-    letter-spacing: -1px;
-  }
+h2 {
+  font-family: 'Gotu', sans-serif;
+  letter-spacing: -1px;
+  text-align: center;
+  font-size: 1.4rem;
+  color: #593202;
+}
+
+.my-pets-lists-wrapper {
+  margin-top: 100px;
+  display: flex;
+  gap: 20px;
+  flex-direction: row; 
+  gap: 20px; 
+}
+
+.pets-section {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.pets-list {
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  gap: 10px;
+  padding: 10px;
+  overflow-y: auto;
+}
+
+.pets-list.liked,
+.pets-list.adopted,
+.pets-list.saved {
+  flex-basis: calc(33.33% - 10px);
+  margin: 10px;
+}
+
+.pet-card {
+  width: 100%;
+}
+
+.msg-if-no-pets {
+  font-family: 'Gotu', sans-serif;
+  letter-spacing: -1px;
+  text-align: center;
+  font-size: 1.4rem;
+  color: #593202;
+  letter-spacing: -1px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 20px;
+}
+
+.msg-if-no-pets > p {
+  margin-bottom: 10px;
+}
+
+.search-button-container {
+  margin-top: 20px;
+  position: relative;
+}
+
+.my-pets-lists-wrapper{
+  margin-top: 100px;
+  display: flex;
+  flex-direction: column;
+}

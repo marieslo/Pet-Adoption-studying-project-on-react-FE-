@@ -1,63 +1,91 @@
-import React, { useEffect, useState, useCallback } from 'react';
+import React, { useEffect } from 'react';
 import PetCard from '../../components/PetCard/PetCard';
 import localforage from 'localforage';
 import './MyPetsPage.css';
-import SearchButton from '../../components/SearchButton/SearchButton';
+import ButtonToSearchPage from '../../components/ButtonToSearchPage/ButtonToSearchPage';
+import { useMyPetsContext } from '../../context/MyPetsProvider';
 
 export default function MyPetsPage() {
-  const [likedPets, setLikedPets] = useState([]);
-
-  const setLikedPetsAsync = useCallback(async (callback) => {
-    setLikedPets((prev) => {
-      const updated = callback(prev);
-      return updated;
-    });
-  }, []);
+  const { 
+    likedPets, 
+    setLikedPetsAsync, 
+    adoptedPets, 
+    setAdoptedPetsAsync, 
+    fosteredPets, 
+    setFosteredPetsAsync, 
+    user 
+  } = useMyPetsContext();
 
   useEffect(() => {
-    const fetchLikedPets = async () => {
+    const fetchDataFromLocalForage = async () => {
       try {
-        const storedLikedPets = await localforage.getItem('likedPets') || [];
-        setLikedPets(storedLikedPets);
+        if (user && user.id) {
+          const storedLikedPets = (await localforage.getItem(`likedPets_${user.id}`)) || [];
+          setLikedPetsAsync(storedLikedPets);
+  
+          const storedAdoptedPets = (await localforage.getItem(`adoptedPets_${user.id}`)) || [];
+          setAdoptedPetsAsync(storedAdoptedPets);
+  
+          const storedFosteredPets = (await localforage.getItem(`fosteredPets_${user.id}`)) || [];
+          setFosteredPetsAsync(storedFosteredPets);
+        }
       } catch (error) {
-        console.error('Error fetching liked pets:', error);
+        console.error('Error fetching pets:', error);
       }
     };
+  
+    fetchDataFromLocalForage();
+  }, [setLikedPetsAsync, setAdoptedPetsAsync, setFosteredPetsAsync, user]);
 
-    fetchLikedPets();
-  }, []);
-
-  const handleLikeToggle = async (pet, isLiked) => {
-    setLikedPets((prevLikedPets) => {
-      if (isLiked) {
-        return [...prevLikedPets, pet];
-      } else {
-        return prevLikedPets.filter((likedPet) => likedPet.id !== pet.id);
-      }
-    });
-
-    try {
-      await setLikedPetsAsync((prevLikedPets) => prevLikedPets);
-      await localforage.setItem('likedPets', likedPets);
-    } catch (error) {
-      console.error('Error storing liked pets:', error);
-    }
-  };
+  const hasLikedPets = likedPets.length > 0;
+  const hasAdoptedPets = adoptedPets.length > 0;
+  const hasFosteredPets = fosteredPets.length > 0;
 
   return (
     <div className='my-pets-page-container'>
-      {likedPets.length > 0 ? (
-        <div className='pets-list'>
-          {likedPets.map((pet) => (
-            <PetCard key={pet.id} pet={pet} onLike={() => handleLikeToggle(pet)} />
-          ))}
-        </div>
-      ) : (
-        <div className='msg-if-no-pets'>
-          You don't have any liked pets
-        </div>
-      )}
-      <SearchButton />
+      <div className='my-pets-lists-wrapper'>
+        {hasLikedPets && (
+          <div className='pets-section'>
+            <h2>Saved for later</h2>
+            <div className='pets-list liked'>
+              {likedPets.map((pet) => (
+                <PetCard key={pet.id} pet={pet} />
+              ))}
+            </div>
+          </div>
+        )}
+
+        {hasAdoptedPets && (
+          <div className='pets-section'>
+            <h2>Adopted</h2>
+            <div className='pets-list adopted'>
+              {adoptedPets.map((pet) => (
+                <PetCard key={pet.id} pet={pet} />
+              ))}
+            </div>
+          </div>
+        )}
+
+        {hasFosteredPets && (
+          <div className='pets-section'>
+            <h2>Fostered</h2>
+            <div className='pets-list fostered'>
+              {fosteredPets.map((pet) => (
+                <PetCard key={pet.id} pet={pet} />
+              ))}
+            </div>
+          </div>
+        )}
+
+        {!hasLikedPets && !hasAdoptedPets && !hasFosteredPets && (
+          <>
+            <div className='msg-if-no-pets'>
+              <p>You haven't liked, adopted, or fostered any pets yet</p>
+            </div>
+            <ButtonToSearchPage />
+          </>
+        )}
+      </div>
     </div>
   );
 }

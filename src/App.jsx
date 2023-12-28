@@ -8,35 +8,44 @@ import SearchPage from './pages/SearchPage/SearchPage';
 import MyProfilePage from './pages/MyProfilePage/MyProfilePage';
 import MyPetsPage from './pages/MyPetsPage/MyPetsPage';
 import { AuthProvider } from './context/AuthProvider';
-import { FetchPetsProvider } from './context/FetchPetsContext';
+import FetchPetsProvider from './context/FetchPetsContext';
+import MyPetsProvider from './context/MyPetsProvider';
 import Header from './components/Header/Header';
 import SinglePetPage from './pages/SinglePetPage/SinglePetPage';
 import PetsDashboard from './admin/PetsDashboard';
 import UsersDashboard from './admin/UsersDashboard';
 import AddPetForm from './admin/AddPetForm';
-import './App.css'
+import EditPetForm from './admin/EditPetForm';
+import { UserProfilesProvider } from './context/UserProfilesContext';
+import './App.css';
 
 export default function App() {
   return (
     <AuthProvider>
-      <FetchPetsProvider>
-        <Router>
-          <MyNavbar />
-            <Header />
-            <Routes>
-              <Route path="/" element={<WelcomePage />} />
-              <Route path="/home" element={<HomePage />} />
-              <Route path="/search" element={<SearchPage />} />
-              <Route path="/profile" element={<MyProfilePage />} />
-              <Route path="/mypets" element={<MyPetsPage />} />
-              <Route path="/pets/:id" element={<SinglePetPage />} />
+      <UserProfilesProvider>
+        <FetchPetsProvider>
+          <MyPetsProvider>
+            <Router>
+              <MyNavbar />
+              <Header />
+              <Routes>
+                <Route path="/" element={<WelcomePage />} />
+                <Route path="/home" element={<HomePage />} />
+                <Route path="/search" element={<SearchPage />} />
+                <Route path="/profile" element={<MyProfilePage />} />
+                <Route path="/mypets" element={<MyPetsPage />} />
+                <Route path="/pets/:id" element={<SinglePetPage />} />
 
-              <Route path="/petsdashboard" element={<PetsDashboard />} />
-              <Route path="/usersdashboard" element={<UsersDashboard />} />
-              <Route path="addpet" element={<AddPetForm/>} />
-            </Routes>
-        </Router>
-      </FetchPetsProvider>
+                <Route path="/addpet" element={<AddPetForm />} />
+                <Route path="/addpet/:id" element={<EditPetForm />} />
+
+                <Route path="/petsdashboard" element={<PetsDashboard />} />
+                <Route path="/usersdashboard" element={<UsersDashboard />} />
+              </Routes>
+            </Router>
+          </MyPetsProvider>
+        </FetchPetsProvider>
+      </UserProfilesProvider>
     </AuthProvider>
   );
 }

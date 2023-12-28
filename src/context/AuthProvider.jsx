@@ -1,7 +1,7 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import localforage from 'localforage';
 
-const AuthContext = createContext();
+export const AuthContext = createContext();
 
 export const useAuth = () => {
   return useContext(AuthContext);
@@ -22,19 +22,25 @@ export const AuthProvider = ({ children }) => {
   }, []);
 
   const login = async (userData) => {
-    const { email, password, firstName, lastName, phoneNumber, isAdmin } = userData;
+    const { email, ...profileData } = userData;
     const storedUser = await localforage.getItem('user');
-    const newUser = { email, password, firstName, lastName, phoneNumber, isAdmin };
-
-    const updatedUser = storedUser ? { ...storedUser, ...newUser } : newUser;
-
+    const updatedUser = { ...storedUser, email, ...profileData };
     setUser(updatedUser);
     await localforage.setItem('user', updatedUser);
+    await localforage.setItem(`userProfile_${email}`, profileData);
   };
 
-  const logout = async () => {
+  const updateUser = async (updatedUser) => {
+    setUser(updatedUser);
+    await localforage.setItem('user', updatedUser);
+    const { email, ...profileData } = updatedUser;
+    await localforage.setItem(`userProfile_${email}`, profileData);
+  };
+
+  const logout = () => {
     setUser(null);
-    await localforage.removeItem('user');
+    localforage.removeItem('user');
+    localforage.removeItem('likedPets');
   };
 
   const isAdmin = () => {
@@ -46,6 +52,7 @@ export const AuthProvider = ({ children }) => {
     login,
     logout,
     isAdmin,
+    updateUser,
   };
 
   return (

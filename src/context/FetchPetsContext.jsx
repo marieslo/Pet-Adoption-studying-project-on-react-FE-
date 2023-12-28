@@ -1,5 +1,5 @@
-import React, { createContext, useContext, useState, useEffect, useCallback } from 'react';
-import fakePetsData from '../fakepetsdata/fakepetsdata.json';
+import React, { createContext, useContext, useState, useCallback } from 'react';
+import localforage from 'localforage';
 
 const FetchPetsContext = createContext();
 
@@ -7,62 +7,100 @@ export const useFetchPets = () => {
   return useContext(FetchPetsContext);
 };
 
-export const useFetchPetsData = () => {
-  return Promise.resolve(fakePetsData);
-};
-
-export const FetchPetsProvider = ({ children }) => {
+export default function FetchPetsProvider({ children }) {
   const [petsData, setPetsData] = useState([]);
-  const [page, setPage] = useState(1);
   const [loading, setLoading] = useState(false);
-  const [hasMore, setHasMore] = useState(true);
-  const limit = 10;
+  const [error, setError] = useState(null);
 
-  const fetchPetsData = useCallback(async () => {
+  const fetchPetDataById = useCallback(async (id) => {
     try {
       setLoading(true);
+      const storedPets = await localforage.getItem('pets') || [];
+      const data = storedPets.find((pet) => pet.id === id);
 
-      const startIdx = (page - 1) * limit;
-      const endIdx = startIdx + limit;
-      const newPetsData = fakePetsData.petsData.slice(startIdx, endIdx);
-
-      setPetsData((prevData) => [...prevData, ...newPetsData]);
-      setPage((prevPage) => prevPage + 1);
-      setHasMore(endIdx < fakePetsData.petsData.length);
+      if (data) {
+        setPetsData([data]);
+        setError(null);
+      } else {
+        setPetsData([]);
+        setError(`Data not found for id: ${id}`);
+      }
     } catch (error) {
-      console.error('Error fetching fake pet data:', error.message);
+      console.error('Error fetching pet data:', error.message);
+      setPetsData([]);
+      setError(`Error fetching pet data: ${error.message}`);
     } finally {
       setLoading(false);
     }
-  }, [page]);
+  }, []);
 
-useEffect(() => {
-  console.log('useEffect is running');
-  fetchPetsData();
-}, []);
+  const fetchPetsData = useCallback(async (searchTerm) => {
+    try {
+      setLoading(true);
+      const storedPets = await localforage.getItem('pets') || [];
+
+      if (searchTerm) {
+        const filteredPets = storedPets.filter((pet) =>
+          pet.name.toLowerCase().includes(searchTerm.toLowerCase())
+        );
+
+        setPetsData(filteredPets);
+        setError(null);
+      } else {
+        setPetsData(storedPets);
+        setError(null);
+      }
+    } catch (error) {
+      console.error('Error fetching pets data:', error.message);
+      setPetsData([]);
+      setError(`Error fetching pets data: ${error.message}`);
+    } finally {
+      setLoading(false);
+    }
+  }, []);
+
+  const advancedSearch = useCallback(async (criteria) => {
+    try {
+      setLoading(true);
+      const storedPets = await localforage.getItem('pets') || [];
+  
+      console.log('Search criteria:', criteria);
+  
+      const filteredPets = storedPets.filter((pet) => {
+        return (
+          pet.adoptionStatus.toLowerCase().includes(criteria?.adoptionStatus?.toLowerCase() || '') &&
+          pet.height.toLowerCase().includes(criteria?.height?.toLowerCase() || '') &&
+          pet.weight.toLowerCase().includes(criteria?.weight?.toLowerCase() || '') &&
+          pet.type.toLowerCase().includes(criteria?.type?.toLowerCase() || '') &&
+          pet.name.toLowerCase().includes(criteria?.name?.toLowerCase() || '') &&
+          pet.breed.toLowerCase().includes(criteria?.breed?.toLowerCase() || '')
+        );
+      });
+  
+      console.log('Filtered pets:', filteredPets);
+  
+      setPetsData(filteredPets);
+      setError(null);
+      return filteredPets;
+    } catch (error) {
+      console.error('Error during advanced search:', error.message);
+      setPetsData([]);
+      setError(`Error during advanced search: ${error.message}`);
+      return null;
+    } finally {
+      setLoading(false);
+    }
+  }, []);
+  
 
   const value = {
     petsData,
     loading,
-    hasMore,
+    error,
+    fetchPetDataById,
     fetchPetsData,
+    advancedSearch,
   };
 
-  return (
-    <FetchPetsContext.Provider value={value}>
-      {children}
-    </FetchPetsContext.Provider>
-  );
-};
-
-const FetchDataButton = () => {
-  const { fetchPetsData } = useFetchPets();
-
-  const handleButtonClick = () => {
-    fetchPetsData();
-  };
-
-  return <button onClick={handleButtonClick}>Fetch Data</button>;
-};
-
-export default FetchPetsProvider;
+  return <FetchPetsContext.Provider value={value}>{children}</FetchPetsContext.Provider>;
+}

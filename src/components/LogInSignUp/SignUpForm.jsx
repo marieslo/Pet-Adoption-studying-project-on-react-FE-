@@ -1,11 +1,13 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Form, Alert, Spinner } from 'react-bootstrap';
 import localforage from 'localforage';
 import { useNavigate } from 'react-router-dom';
 import { nanoid } from 'nanoid';
+import { useAuth } from '../../context/AuthProvider';
+
 import './LoginSignUp.css';
 
-export default function SignUpForm({ onSubmit }) {
+export default function SignUpForm() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
@@ -13,11 +15,13 @@ export default function SignUpForm({ onSubmit }) {
   const [lastName, setLastName] = useState('');
   const [phoneNumber, setPhoneNumber] = useState('');
   const [loading, setLoading] = useState(false);
+  const { login, updateUser } = useAuth();
   const [invalidFields, setInvalidFields] = useState([]);
   const [errorMessages, setErrorMessages] = useState({
     email: '',
     password: '',
     confirmPassword: '',
+    phoneNumber: '',
   });
   const [showSuccessMessage, setShowSuccessMessage] = useState(false);
 
@@ -68,53 +72,55 @@ export default function SignUpForm({ onSubmit }) {
       return;
     }
 
-    const registeredUsers = (await localforage.getItem('registeredUsers')) || [];
-    const isEmailUnique = registeredUsers.every((user) => user.email !== email);
-
-    if (!isEmailUnique) {
-      setInvalidFields((prevInvalidFields) => [...prevInvalidFields, 'email']);
-      setErrorMessages((prevErrorMessages) => ({
-        ...prevErrorMessages,
-        email: 'Email is already registered. Please use a different email.',
-      }));
-      return;
-    }
-
-    const userData = {
-      id: generateUniqueId(),
-      email,
-      password,
-      firstName,
-      lastName,
-      phoneNumber,
-    };
-
     try {
-      setLoading(true);
+      const registeredUsers = (await localforage.getItem('registeredUsers')) || [];
+      const isEmailUnique = registeredUsers.every((user) => user.email !== email);
+
+      if (!isEmailUnique) {
+        setInvalidFields((prevInvalidFields) => [...prevInvalidFields, 'email']);
+        setErrorMessages((prevErrorMessages) => ({
+          ...prevErrorMessages,
+          email: 'Email is already registered. Please use a different email.',
+        }));
+        return;
+      }
+
+      const userData = {
+        id: generateUniqueId(),
+        email,
+        password,
+        firstName,
+        lastName,
+        phoneNumber,
+      };
 
       await localforage.setItem('userData', userData);
-
       registeredUsers.push(userData);
       await localforage.setItem('registeredUsers', registeredUsers);
+
+      login({ email, password, firstName, lastName, phoneNumber });
+      updateUser(userData);
       setShowSuccessMessage(true);
 
-      onSubmit(userData);
-
       setTimeout(() => {
-        setShowSuccessMessage(false);
-        setLoading(false);
-      }, 500);
+        navigate('/home');
+      }, 1000);
     } catch (error) {
-      console.error('Error during signup:', error);
-      setLoading(false);
+      console.error('Error registering user:', error);
     }
   };
+
+  useEffect(() => {
+    if (showSuccessMessage) {
+      navigate('/home');
+    }
+  }, [showSuccessMessage, navigate]);
 
   return (
     <Form onSubmit={handleSubmit}>
       {showSuccessMessage && (
         <Alert variant="success">
-          Signup successful! You can now log in. Don't forget to log in using your new credentials.
+          Signup successful!
         </Alert>
       )}
 

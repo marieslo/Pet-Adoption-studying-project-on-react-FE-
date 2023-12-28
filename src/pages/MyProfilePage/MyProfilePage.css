@@ -1,19 +1,22 @@
 .profile-page-container {
-  background: url('../../styles/backgrounds/myprofile-page-background.jpg') no-repeat;
+  background: url('../../styles/backgrounds/my-profile-page-background.jpg') no-repeat;
   background-size: cover;
-  background-position: center;
-  background-attachment: fixed;
+  background-repeat: no-repeat;
+  width: 100vw;
+  height: 100vh;
+  z-index: 1;
 }
 
 .edit-profile-container {
   height: 100vh;
-  width: 400px;
+  width: 600px;
   margin: 0 auto;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  font-family: 'Space Mono', monospace;
+  font-family: 'Gotu', sans-serif;
+  letter-spacing: -1px;
 }
 
 input,
@@ -28,7 +31,7 @@ textarea {
 
 textarea {
   width: 100%;
-  height: 200px !important;
+  height: 100px !important;
 }
 
 .edit-profile-page-btn {
@@ -69,6 +72,7 @@ label {
   top: 20%;
   left: 5%;;
   justify-content: center;
-  font-family: 'Space Mono', monospace;
+  font-family: 'Gotu', sans-serif;
+  letter-spacing: -1px;
   position: absolute;
 }
