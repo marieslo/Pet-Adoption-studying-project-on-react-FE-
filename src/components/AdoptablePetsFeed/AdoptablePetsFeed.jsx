@@ -1,12 +1,14 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import PetCard from '../PetCard/PetCard';
 import { Spinner } from 'react-bootstrap';
 import { useFetchPets } from '../../context/FetchPetsContext';
+import { AuthContext } from '../../context/AuthProvider'; 
 import './AdoptablePetsFeed.css';
 
-export default function AdoptablePetsFeed () {
+export default function AdoptablePetsFeed() {
   const { petsData, loading, error, fetchPetsData } = useFetchPets();
   const [adoptablePetsData, setAdoptablePetsData] = useState([]);
+  const { isAuthenticated, user } = useContext(AuthContext);
 
   useEffect(() => {
     const fetchAdoptablePets = async () => {
@@ -25,6 +27,14 @@ export default function AdoptablePetsFeed () {
     setAdoptablePetsData(adoptablePets);
   }, [petsData]);
 
+  const handleLike = (petId) => {
+    if (isAuthenticated) {
+      console.log(`User ${user.username} liked pet with ID ${petId}`);
+    } else {
+      console.log('Please log in to like pets');
+    }
+  };
+
   return (
     <div className='allpets-feed-wrapper'>
       {loading ? (
@@ -36,7 +46,12 @@ export default function AdoptablePetsFeed () {
       ) : (
         <div className="pet-cards-container">
           {adoptablePetsData.slice().reverse().map((pet) => (
-            <PetCard key={pet.id} pet={pet} onLike={() => {}} />
+            <PetCard
+              key={pet.id}
+              pet={pet}
+              onLike={() => handleLike(pet.id)}  
+              showAdoptionStatus={true}
+            />
           ))}
         </div>
       )}

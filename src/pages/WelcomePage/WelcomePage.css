@@ -1,3 +1,18 @@
+@media screen and (max-width: 768px) {
+  .welcome-page-container {
+    padding: 20px;
+  }
+
+  .welcome-text {
+    margin-top: 50px;
+  }
+
+  .welcome-page-allpetsfeed-container {
+    width: 100%;
+    flex-direction: column;
+  }
+}
+
 .welcome-page-container {
   position: absolute;
   background: url('../../styles/backgrounds/welcome-page-background.jpg');
@@ -6,46 +21,37 @@
   height: 100vh;
   z-index: 1;
   padding-left: 50px;
-}
-
-.welcome-text, h3 {
-  width: 500px;
-  min-width: 300px;
-  font-size: 1.4rem;
-  line-height: 1.1;
-  font-family: 'Gotu', sans-serif;
-  letter-spacing: -1px;
-  color: #401E12;
-  text-align: center;
-  text-shadow: 0 2px 4px #401E12(0, 0, 0, 0.1);
-  margin-top: 150px;
-  margin-bottom: 20px;
-}
-
-.welcome-page-container {
   display: flex;
   flex-direction: column;
   align-items: start;
 }
 
-.welcome-page-allpetsfeed-container {
+.welcome-text {
+  font-family: 'Gotu', sans-serif;
+  letter-spacing: -1px;
+  margin: 200px 0 100px 150px;
+  width: 320px;
+  font-size: 1.2rem;
+  color: #593202;
+}
+
+.welcome-page-petsfeed-container {
   overflow-x: auto;
   white-space: nowrap;
   display: flex;
+  flex-direction: column;
   align-items: start;
-  width: 650px;
+  width: 610px;
+  height: fit-content;
+  margin: -320px 50px 20px 60%;
 }
 
-.scroll-arrow {
-  font-size: 24px;
-  cursor: pointer;
-  margin: 0 10px;
-}
-
-.scroll-left {
-  transform: rotate(180deg);
-}
-
-.scroll-right {
-  transform: rotate(0deg);
+.text-petsfeed-container{
+  font-family: 'Gotu', sans-serif;
+  letter-spacing: -1px;
+  width: 400px;
+  font-size: 1.2rem;
+  color: #593202;
+  margin: -30px 50px 0 0;
+  position: absolute;
 }

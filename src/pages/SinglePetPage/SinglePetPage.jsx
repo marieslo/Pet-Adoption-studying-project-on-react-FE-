@@ -1,20 +1,32 @@
 import React, { useEffect, useState } from 'react';
 import { Card, Button, Spinner } from 'react-bootstrap';
 import { useParams } from 'react-router-dom';
-import { useFetchPets } from '../../context/FetchPetsContext';
-import { useMyPetsContext } from '../../context/MyPetsProvider';
 import './SinglePetPage.css';
 import localforage from 'localforage';
+import { useFetchPets } from '../../context/FetchPetsContext';
+import { useMyPetsContext } from '../../context/MyPetsProvider';
 import { useAuth } from '../../context/AuthProvider';
+
 
 export default function SinglePetPage() {
   const { id } = useParams();
   const { fetchPetDataById, petsData, loading } = useFetchPets();
-  const { setAdoptedPetsAsync, setFosteredPetsAsync, adoptedPets, fosteredPets } = useMyPetsContext();
+  const {
+    setAdoptedPetsAsync,
+    setFosteredPetsAsync,
+    adoptedPets,
+    fosteredPets,
+    setAdoptedPets,
+    setFosteredPets,
+  } = useMyPetsContext();
+
   const { user } = useAuth();
 
+  const [currentAction, setCurrentAction] = useState(null);
+  const [returnButtonClicked, setReturnButtonClicked] = useState(false);
   const isAdopted = adoptedPets.some((adoptedPet) => adoptedPet.id === id);
   const isFostered = fosteredPets.some((fosteredPet) => fosteredPet.id === id);
+  const isOwner = petsData[0]?.owner === user?.id;
 
   useEffect(() => {
     fetchPetDataById(id);
@@ -22,8 +34,9 @@ export default function SinglePetPage() {
 
   const handleAdoptClick = async () => {
     try {
-      if (!isAdopted && (petsData[0]?.adoptionStatus === 'adoptable' || petsData[0]?.adoptionStatus === 'fostered')) {
-        await setAdoptedPetsAsync((prevAdoptedPets) => [...prevAdoptedPets, petsData[0]]);
+      if (!isAdopted && !isFostered && !currentAction && petsData[0]?.adoptionStatus === 'adoptable') {
+        const adoptedPet = petsData[0];
+        await setAdoptedPetsAsync(adoptedPet);
         updateAdoptionStatus('adopted');
       }
     } catch (error) {
@@ -33,8 +46,9 @@ export default function SinglePetPage() {
 
   const handleFosterClick = async () => {
     try {
-      if (!isFostered && petsData[0]?.adoptionStatus === 'adoptable') {
-        await setFosteredPetsAsync((prevFosteredPets) => [...prevFosteredPets, petsData[0]]);
+      if (!isFostered && !currentAction && petsData[0]?.adoptionStatus === 'adoptable') {
+        const fosteredPet = petsData[0];
+        await setFosteredPetsAsync(fosteredPet);
         updateAdoptionStatus('fostered');
       }
     } catch (error) {
@@ -44,18 +58,17 @@ export default function SinglePetPage() {
 
   const handleReturnClick = async () => {
     try {
-      if (isAdopted) {
-        await setAdoptedPetsAsync((prevAdoptedPets) =>
-          prevAdoptedPets.filter((adoptedPet) => adoptedPet.id !== id)
-        );
-        updateAdoptionStatus('adoptable');
-      } else if (isFostered) {
-        await setFosteredPetsAsync((prevFosteredPets) =>
-          prevFosteredPets.filter((fosteredPet) => fosteredPet.id !== id)
-        );
-        updateAdoptionStatus('adoptable');
-      } else {
-        console.log("You can't return a pet that you didn't adopt or foster.");
+      if ((isAdopted || isFostered) && !returnButtonClicked) {
+        setReturnButtonClicked(true);
+  
+        if (isAdopted) {
+          setAdoptedPets((prevAdoptedPets) => prevAdoptedPets.filter((pet) => pet.id !== id));
+        } else if (isFostered) {
+          setFosteredPets((prevFosteredPets) => prevFosteredPets.filter((pet) => pet.id !== id));
+        }
+  
+        await updateAdoptionStatus('adoptable');
+        console.log('Adoption Status Updated');
       }
     } catch (error) {
       console.error('Error returning pet:', error);
@@ -77,7 +90,7 @@ export default function SinglePetPage() {
   };
 
   if (loading) {
-    return <Spinner animation="border" role="status"><span className="sr-only">Loading...</span></Spinner>;
+    return <Spinner animation="grow" role="status"><span className="sr-only">Loading...</span></Spinner>;
   }
 
   if (!petsData || petsData.length === 0) {
@@ -96,10 +109,9 @@ export default function SinglePetPage() {
     hypoallergenic,
     dietaryRestrictions,
     breed,
-    isOwner,
   } = petsData[0];
 
-  const isAdoptedByCurrentUser = isAdopted && adoptedPets.find((adoptedPet) => adoptedPet.id === id)?.owner === user.id;
+  const isAuthenticated = !!user;
 
   return (
     <div className='single-pet-card-container'>
@@ -116,7 +128,7 @@ export default function SinglePetPage() {
           <Card.Title className='single-page-card-title'>{name}</Card.Title>
           <Card.Text>Bio: {bio}</Card.Text>
           <Card.Text>Type: {type}</Card.Text>
-          <Card.Text>Status: {isAdopted ? 'Adopted' : (isFostered ? 'Fostered' : adoptionStatus)}</Card.Text>
+          <Card.Text>Status: {isAdopted ? 'adopted' : (isFostered ? 'fostered' : adoptionStatus)}</Card.Text>
           <Card.Text>Height: {height}</Card.Text>
           <Card.Text>Weight: {weight}</Card.Text>
           <Card.Text>Color: {color}</Card.Text>
@@ -124,39 +136,44 @@ export default function SinglePetPage() {
           <Card.Text>Dietary Restrictions: {dietaryRestrictions}</Card.Text>
           <Card.Text>Breed: {breed}</Card.Text>
 
-          {(adoptionStatus === 'adoptable' || adoptionStatus === 'fostered') && (
+          {isAuthenticated && (
             <>
-              <Button
-                variant="primary"
-                onClick={handleAdoptClick}
-                disabled={isAdopted || (adoptionStatus === 'adopted' && !isAdoptedByCurrentUser)}
-              >
-                Adopt
-              </Button>
-              {adoptionStatus === 'adoptable' && (
-                <Button variant="success" onClick={handleFosterClick} disabled={isFostered}>
-                  Foster
+              {!isAdopted && !currentAction && (
+                <>
+                  {adoptionStatus === 'adoptable' && (
+                    <Button
+                      variant="secondary"
+                      onClick={handleAdoptClick}
+                    >
+                      Adopt
+                    </Button>
+                  )}
+
+                  {!isFostered && !currentAction && (
+                    <>
+                      {adoptionStatus === 'adoptable' && (
+                        <Button
+                          variant="secondary"
+                          onClick={handleFosterClick}
+                        >
+                          Foster
+                        </Button>
+                      )}
+                    </>
+                  )}
+                </>
+              )}
+
+              {(isAdopted || isFostered) && !currentAction && (
+                <Button
+                  variant="secondary"
+                  onClick={handleReturnClick}
+                  disabled={returnButtonClicked}
+                >
+                  Return to Adoption Center
                 </Button>
               )}
             </>
-          )}
-          {(adoptionStatus === 'adopted' && isAdopted && isAdoptedByCurrentUser) && (
-  <>
-          {isOwner ? (
-            <Button variant="danger" onClick={handleReturnClick}>
-              Return to Adoption Center
-            </Button>
-          ) : (
-            <Button variant="danger" disabled>
-              Adopted Now
-            </Button>
-          )}
-        </>
-          )}
-          {adoptionStatus === 'fostered' && isFostered && (
-            <Button variant="danger" onClick={handleReturnClick}>
-              Return from Foster Care
-            </Button>
           )}
         </Card.Body>
       </Card>

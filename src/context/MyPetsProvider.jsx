@@ -15,28 +15,30 @@ export default function MyPetsProvider({ children }) {
   const [adoptedPets, setAdoptedPets] = useState([]);
   const [fosteredPets, setFosteredPets] = useState([]);
 
-  const setLikedPetsAsync = async (data) => {
+  const [userPets, setUserPets] = useState([]);
+
+  const setLikedPetsAsync = async (pet) => {
     try {
-      setLikedPets(data);
-      await localforage.setItem(likedPetsKey, data);
+      setLikedPets(pet);
+      await localforage.setItem(likedPetsKey, pet);
     } catch (error) {
       console.error('Error storing liked pets:', error);
     }
   };
-
-  const setAdoptedPetsAsync = async (data) => {
+  
+  const setAdoptedPetsAsync = async (pet) => {
     try {
-      setAdoptedPets(data);
-      await localforage.setItem(adoptedPetsKey, data);
+      await localforage.setItem(adoptedPetsKey, (prevAdoptedPets) => [...prevAdoptedPets, pet]);
+      setAdoptedPets((prevAdoptedPets) => [...prevAdoptedPets, pet]);
     } catch (error) {
       console.error('Error storing adopted pets:', error);
     }
   };
-
-  const setFosteredPetsAsync = async (data) => {
+  
+  const setFosteredPetsAsync = async (pet) => {
     try {
-      setFosteredPets(data);
-      await localforage.setItem(fosteredPetsKey, data);
+      await localforage.setItem(fosteredPetsKey, (prevFosteredPets) => [...prevFosteredPets, pet]);
+      setFosteredPets((prevFosteredPets) => [...prevFosteredPets, pet]);
     } catch (error) {
       console.error('Error storing fostered pets:', error);
     }
@@ -57,7 +59,7 @@ export default function MyPetsProvider({ children }) {
     try {
       const newLikeStatus = !isLiked(pet);
       const updatedLikedPets = newLikeStatus
-        ? [...likedPets, { ...pet }] 
+        ? [...likedPets, { ...pet }]
         : likedPets.filter((likedPet) => likedPet.id !== pet.id);
 
       await setLikedPetsAsync(updatedLikedPets);
@@ -74,7 +76,6 @@ export default function MyPetsProvider({ children }) {
         const storedLikedPets = (await localforage.getItem(likedPetsKey)) || [];
         const storedAdoptedPets = (await localforage.getItem(adoptedPetsKey)) || [];
         const storedFosteredPets = (await localforage.getItem(fosteredPetsKey)) || [];
-
         setLikedPets(storedLikedPets);
         setAdoptedPets(storedAdoptedPets);
         setFosteredPets(storedFosteredPets);
@@ -96,10 +97,13 @@ export default function MyPetsProvider({ children }) {
         setAdoptedPets,
         setAdoptedPetsAsync,
         fosteredPets,
+        setFosteredPets,
         setFosteredPetsAsync,
         getPetById,
         handleLikeClick,
         isLiked,
+        userPets,
+        setUserPets,
       }}
     >
       {children}

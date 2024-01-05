@@ -1,48 +1,59 @@
 import React, { useState, useEffect } from 'react';
 import { Table, Button, Modal, Form } from 'react-bootstrap';
-import localforage from 'localforage';
 import './AdminDashboards.css';
-import PetsOwners from './PetsOwners';
+import localforage from 'localforage';
+import MyPetsModalContent from './MyPetsModalContent';
 import { useMyPetsContext } from '../context/MyPetsProvider';
-import { useUserProfiles } from '../context/UserProfilesContext';
+
+const itemsPerPage = 10;
 
 export default function UsersDashboard() {
-  const { userProfiles } = useUserProfiles();
   const [users, setUsers] = useState([]);
   const [showConfirmationModal, setShowConfirmationModal] = useState(false);
   const [showDeleteWarningModal, setShowDeleteWarningModal] = useState(false);
   const [showUserPetsModal, setShowUserPetsModal] = useState(false);
   const [selectedUser, setSelectedUser] = useState(null);
   const [selectedUserRole, setSelectedUserRole] = useState('user');
-  
-  const { adoptedPets, fosteredPets } = useMyPetsContext();
+  const [currentPage, setCurrentPage] = useState(1);
+
+  const {fosteredPets, adoptedPets, likedPets, setUserPets } = useMyPetsContext(); 
 
   useEffect(() => {
-    const fetchUsers = async () => {
+    const fetchData = async () => {
       try {
-        const storedUsers = await localforage.getItem('registeredUsers') || [];
+        const storedUsers = await localforage.getItem('users') || [];
         setUsers(storedUsers);
       } catch (error) {
         console.error('Error fetching users:', error);
       }
     };
 
-    fetchUsers();
+    fetchData();
   }, []);
 
-  const handleUserClick = (user) => {
-    setSelectedUser(user);
-    setSelectedUserRole(user.role || 'user');
-    setShowConfirmationModal(true);
-  };
-
-  const handleConfirmDelete = () => {
-    setShowDeleteWarningModal(true);
-  };
-
-  const handleUserPetsClick = (user) => {
+  const handleUserPetsClick = async (user) => {
     setSelectedUser(user);
     setShowUserPetsModal(true);
+
+    try {
+      const userPetsData = await localforage.getItem(`userPets_${user.id}`) || [];
+      setUserPets(userPetsData); 
+    } catch (error) {
+      console.error('Error fetching user pets:', error);
+    }
+  };
+
+  const getUserPets = () => {
+    switch (selectedUserRole) {
+      case 'fostered':
+        return fosteredPets;
+      case 'adopted':
+        return adoptedPets;
+      case 'liked':
+        return likedPets;
+      default:
+        return [];
+    }
   };
 
   const handleDeleteUserClick = (user) => {
@@ -58,7 +69,7 @@ export default function UsersDashboard() {
       }
       await localforage.removeItem(`userPets_${selectedUser.id}`);
       const updatedUsers = users.filter((user) => user.id !== selectedUser.id);
-      await localforage.setItem('registeredUsers', updatedUsers);
+      await localforage.setItem('users', updatedUsers);
       setUsers(updatedUsers);
     } catch (error) {
       console.error('Error deleting user:', error);
@@ -80,7 +91,7 @@ export default function UsersDashboard() {
       return user;
     });
 
-    localforage.setItem('registeredUsers', updatedUsers);
+    localforage.setItem('users', updatedUsers);
     setUsers(updatedUsers);
     setShowConfirmationModal(false);
   };
@@ -94,13 +105,27 @@ export default function UsersDashboard() {
   return (
     <div className='admin-dashboard-container'>
       <div className="dashboard-header">
-        <h2>Users</h2>
-        <span className='dashboard-counter'>Total Users: {users.length}</span>
+        <h2 className='admin-dashboard-name'>Users</h2>
+      </div>
+      <div className="status-counts">
+        <span className='dashboard-counter'>Total Accounts: {users.length}</span>
+        <div className="pagination-container">Page:
+          {Array.from({ length: Math.ceil(users.length / itemsPerPage) }).map((_, index) => (
+            <Button
+              className='pagination-btn'
+              key={index}
+              onClick={() => setCurrentPage(index + 1)}
+              variant={currentPage === index + 1 ? "light" : "secondary"}
+            >
+              {index + 1}
+            </Button>
+          ))}
+        </div>
       </div>
       <Table striped bordered hover className="custom-table">
         <thead>
           <tr>
-            <th>ID</th>
+            <th>User's id</th>
             <th>Email</th>
             <th>First Name</th>
             <th>Last Name</th>
@@ -121,7 +146,7 @@ export default function UsersDashboard() {
               <td>{user.shortBio}</td>
               <td>{user.role || 'user'}</td>
               <td className="d-flex">
-                <Button variant="secondary" className='admin-dashboard-btn mr-2' onClick={() => handleUserClick(user)}>
+                <Button variant="secondary" className='admin-dashboard-btn mr-2' onClick={() => setShowConfirmationModal(true)}>
                   Change role
                 </Button>
                 <Button variant="secondary" className='admin-dashboard-btn mr-2' onClick={() => handleUserPetsClick(user)}>
@@ -172,20 +197,15 @@ export default function UsersDashboard() {
           </Button>
         </Modal.Footer>
       </Modal>
-      <Modal show={showUserPetsModal} onHide={handleCloseModals}>
-        <Modal.Header closeButton>
-          <Modal.Title>User Pets</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          {selectedUser && (
-            <PetsOwners
-              userId={selectedUser.id}
-              adoptedPets={adoptedPets}
-              fosteredPets={fosteredPets}
-            />
-          )}
-        </Modal.Body>
-      </Modal>
+
+      <Modal show={showUserPetsModal} onHide={() => setShowUserPetsModal(false)}>
+          <Modal.Header closeButton>
+            <Modal.Title>{`Pets of ${selectedUser && selectedUser.email}`} </Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            <MyPetsModalContent pets={getUserPets()} cssClass="user-pets" />
+          </Modal.Body>
+        </Modal>
     </div>
   );
 }

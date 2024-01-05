@@ -1,5 +1,5 @@
-@media (max-width: 600px) {
-  welcome-text {
+@media (max-width: 768px) {
+  .welcome-text {
     line-height: 0.5;
     font-size: 30px;
     min-width: 400px;
@@ -15,7 +15,7 @@
   z-index: 1;
 }
 
-.home-page-call-to-action, h3 {
+.home-page-greeting, h3 {
   font-family: 'Gotu', sans-serif;
   letter-spacing: -1px;
   margin-top: 200px;
@@ -26,35 +26,19 @@
   color: #593202;
 }
 
+.they-need-your-love, .call-to-action{
+  font-family: 'Gotu', sans-serif;
+  letter-spacing: -1px;
+  width: 400px;
+  font-size: 1.2rem;
+  color: #593202;
+}
+
 .home-page-allpetsfeed-container {
   overflow-x: auto;
   padding: 10px;
   white-space: nowrap;
-  width: 660px; 
-  margin-left: 5%;
-  position: relative; 
-}
-
-.scroll-arrow {
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-  width: 30px;
-  height: 30px;
-  background-color: rgba(255, 255, 255, 0.7);
-  border: 1px solid #ccc;
-  border-radius: 50%;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 20px;
-}
-
-.scroll-left {
-  left: 0;
-}
-
-.scroll-right {
-  right: 0;
+  position: relative;
+  margin-top: 200px;
+  margin-left: 50px;
 }

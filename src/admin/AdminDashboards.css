@@ -16,18 +16,14 @@
   overflow-x: auto;
 }
 
-h2 {
-  color: #593202;
-}
-
 .admin-dashboard-btn {
   font-size: 14px !important;
-  height: 30px !important;
+  height: fit-content;
   padding: 0px 5px;
-  margin: 10px;
   width: fit-content !important;
   font-family: 'Gotu', sans-serif;
   font-size: 14px;
+  margin: 5px;
 }
 
 .filter-input {
@@ -40,12 +36,13 @@ h2 {
 .add-pet-form-container {
   width: 80%;
   margin: auto;
+  margin-top: 120px;
 }
 
 .add-pet-form {
   display: flex;
   flex-direction: row;
-  justify-content: space-between;
+  justify-content: flex-start;
 }
 
 .add-pet-form label {
@@ -83,22 +80,32 @@ h2 {
   flex-direction: column;
 }
 
-h2 {
-  margin-bottom: 20px;
+.admin-dashboard-name {
+  font-size: 1.4rem;
+  font-weight: 600;
+  letter-spacing: -1px;
+  color: #8C4303;
+  position: absolute;
+  top: 70px;
 }
 
-.add-pet-button {
-  background-color: green !important;
+.dashboard-header{
+margin: 20px;
+display: flex;
+align-items: flex-end;
+}
+
+.save-pet-details-button {
   font-size: 14px !important;
   padding: 5px 5px 5px 5px !important;
   margin: 5px;
-  width: 360px;
-  height: 38px;
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
 }
 
 .admin-success-message {
   background-color: transparent !important;
-  border: solid #45a049;
   color: #8C4303;
   padding: 15px;
   border-radius: 0.25rem;
@@ -116,18 +123,20 @@ h2 {
 }
 
 textarea {
-  height: 230px !important;
+  height: 160px !important;
   width: 364px;
+  width: 100px;
 }
 
 .pet-dashboard-btns {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
+  margin-left: -50px;
 }
 
 .pet-dashboard-btns .admin-dashboard-btn {
-  font-size: 14px;
-  height: 30px;
+  font-size: 12px;
+  height:  fit-content;
   padding: 3px 10px; 
   margin: 10px;
 }
@@ -138,11 +147,36 @@ textarea {
 }
 
 .dashboard-counter{
-  margin: 10px;
+  margin: 20px;
   padding: 10px;
 }
 
 .custom-table th,
 .custom-table td {
   background-color: #D9C5C1;
+}
+
+.pagination-container{
+margin: 0 0 10px 30px;
+}
+
+.pagination-btn{
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  padding: 3px;
+  margin: 10px;
+}
+
+.add-new-pet-btn{
+  font-size: 14px;
+  background-color: #837364;
+  border-radius: 0.25rem;
+  padding: 5px;
+  color: #FFFFFF;
+  border: none;
+}
+
+.status-counts{
+  margin: 10px;
 }

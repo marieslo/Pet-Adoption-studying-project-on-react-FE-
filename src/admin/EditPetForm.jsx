@@ -44,6 +44,11 @@ export default function EditPetForm() {
         console.log('Pet updated:', updatedPets.find((pet) => pet.id === id));
 
         setShowSuccessMessage(true);
+
+        setTimeout(() => {
+          navigate('/petsdashboard');
+        }, 500);
+        
         setErrorMessage('');
 
       } catch (error) {
@@ -84,7 +89,9 @@ export default function EditPetForm() {
   return (
     <div className='admin-dashboard-container'>
       <div className="add-pet-form-container">
-        <h2>Edit Pet Details:</h2>
+        <h2 >Edit Pet Details:</h2>
+        <br/>
+        <br/>
         <br/>
         <form onSubmit={handleSubmit} className="add-pet-form">
           <div className="add-pet-form-column">
@@ -184,15 +191,15 @@ export default function EditPetForm() {
                 <br/>
                 <input type="text" name="weight" value={petDetails.weight} onChange={handleChange} required />
               </label>
-              <label className="left-label">
-                Color: *
-                <br/>
-                <input type="text" name="color" value={petDetails.color} onChange={handleChange} required />
-              </label>
             </div>
           </div>
           <div className="add-pet-form-column">
             <div className="add-pet-form-column-item">
+            <label className="left-label">
+                Color: *
+                <br/>
+                <input type="text" name="color" value={petDetails.color} onChange={handleChange} required />
+              </label>
               <label className="left-label">
                 Bio: *
                 <br/>
@@ -240,7 +247,7 @@ export default function EditPetForm() {
               </div>
           </div>
           <div className="add-pet-form-footer">
-            <Button className='add-pet-button' variant='secondary' type="submit">
+            <Button className='save-pet-details-button' variant='secondary' type="submit">
               Save Changes
             </Button>
             {showSuccessMessage && (

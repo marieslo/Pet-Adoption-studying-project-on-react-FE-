@@ -13,8 +13,8 @@
   box-shadow: 0 2px 4px #401E12;
   z-index: 100;
   padding: 20px;
-  top: 82%;
-  left: 20%;
+  top: 450px;
+  left: 300px;
   transition: transform 0.3s ease;
   background: radial-gradient(circle at 60px 20px, #e4a2ab, #a72c43);
 }

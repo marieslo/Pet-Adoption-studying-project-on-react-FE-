@@ -73,15 +73,12 @@ export default function AddPetForm() {
     setAddedPetId(null);
   };
 
-  const handleSuccessClose = () => {
-    setShowSuccessMessage(false);
-    setAddedPetId(null);
-  };
-
   return (
     <div className='admin-dashboard-container'>
       <div className="add-pet-form-container">
         <h2>Pet's Details:</h2>
+        <br/>
+        <br/>
         <br/>
         <form onSubmit={handleSubmit} className="add-pet-form">
 
@@ -182,15 +179,15 @@ export default function AddPetForm() {
                 <br/>
                 <input type="text" name="weight" value={petDetails.weight} onChange={handleChange} required />
               </label>
-              <label className="left-label">
-                Color: *
-                <br/>
-                <input type="text" name="color" value={petDetails.color} onChange={handleChange} required />
-              </label>
             </div>
           </div>
           <div className="add-pet-form-column">
             <div className="add-pet-form-column-item">
+            <label className="left-label">
+                Color: *
+                <br/>
+                <input type="text" name="color" value={petDetails.color} onChange={handleChange} required />
+              </label>
               <label className="left-label">
                 Bio: *
                 <br/>
@@ -237,16 +234,15 @@ export default function AddPetForm() {
               </label>
               <br/>
               <br/>
-              <div className="add-pet-form-footer">
-                <Button className='add-pet-button' variant='success' type="submit">
+              </div>
+            </div>
+            <div className="add-pet-form-footer">
+              <Button className='save-pet-details-button' variant='secondary' type="submit">
                   Save
                 </Button>
                 {showSuccessMessage && (
                   <div className="≈">
                     Pet added successfully! ID: {addedPetId}
-                    <Button  onClick={handleSuccessClose}>
-                     x
-                    </Button>
                   </div>
                 )}
                 {errorMessage && (
@@ -254,8 +250,6 @@ export default function AddPetForm() {
                     {errorMessage}
                   </div>
                 )}
-              </div>
-            </div>
           </div>
         </form>
       </div>

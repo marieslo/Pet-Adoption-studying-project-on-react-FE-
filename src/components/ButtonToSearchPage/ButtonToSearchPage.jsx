@@ -8,6 +8,7 @@ export default function ButtonToSearchPage() {
   const handleSearch = () => {
     navigate('/search');
   };
+  
   return (
       <button className="search-button" onClick={handleSearch}>
         Find a pet

@@ -1,7 +1,7 @@
 import React, { createContext, useContext, useState, useCallback } from 'react';
 import localforage from 'localforage';
 
-const FetchPetsContext = createContext();
+export const FetchPetsContext = createContext();
 
 export const useFetchPets = () => {
   return useContext(FetchPetsContext);
@@ -38,18 +38,53 @@ export default function FetchPetsProvider({ children }) {
     try {
       setLoading(true);
       const storedPets = await localforage.getItem('pets') || [];
-
-      if (searchTerm) {
-        const filteredPets = storedPets.filter((pet) =>
+  
+      let filteredPets = storedPets;
+  
+      if (searchTerm && typeof searchTerm === 'string') {
+        filteredPets = filteredPets.filter((pet) =>
           pet.name.toLowerCase().includes(searchTerm.toLowerCase())
         );
-
-        setPetsData(filteredPets);
-        setError(null);
-      } else {
-        setPetsData(storedPets);
-        setError(null);
       }
+  
+      if (searchTerm?.adoptionStatus) {
+        filteredPets = filteredPets.filter((pet) =>
+          pet.adoptionStatus.toLowerCase().includes(searchTerm.adoptionStatus.toLowerCase())
+        );
+      }
+  
+      if (searchTerm?.height) {
+        filteredPets = filteredPets.filter((pet) =>
+          pet.height.toLowerCase().includes(searchTerm.height.toLowerCase())
+        );
+      }
+  
+      if (searchTerm?.weight) {
+        filteredPets = filteredPets.filter((pet) =>
+          pet.weight.toLowerCase().includes(searchTerm.weight.toLowerCase())
+        );
+      }
+  
+      if (searchTerm?.type) {
+        filteredPets = filteredPets.filter((pet) =>
+          pet.type.toLowerCase().includes(searchTerm.type.toLowerCase())
+        );
+      }
+  
+      if (searchTerm?.name) {
+        filteredPets = filteredPets.filter((pet) =>
+          pet.name.toLowerCase().includes(searchTerm.name.toLowerCase())
+        );
+      }
+  
+      if (searchTerm?.breed) {
+        filteredPets = filteredPets.filter((pet) =>
+          pet.breed.toLowerCase().includes(searchTerm.breed.toLowerCase())
+        );
+      }
+  
+      setPetsData(filteredPets);
+      setError(null);
     } catch (error) {
       console.error('Error fetching pets data:', error.message);
       setPetsData([]);
@@ -58,27 +93,27 @@ export default function FetchPetsProvider({ children }) {
       setLoading(false);
     }
   }, []);
-
-  const advancedSearch = useCallback(async (criteria) => {
+  
+  const advancedSearch = useCallback(async (searchTerm) => {
     try {
       setLoading(true);
       const storedPets = await localforage.getItem('pets') || [];
-  
-      console.log('Search criteria:', criteria);
-  
+
+      console.log('Search term:', searchTerm);
+
       const filteredPets = storedPets.filter((pet) => {
         return (
-          pet.adoptionStatus.toLowerCase().includes(criteria?.adoptionStatus?.toLowerCase() || '') &&
-          pet.height.toLowerCase().includes(criteria?.height?.toLowerCase() || '') &&
-          pet.weight.toLowerCase().includes(criteria?.weight?.toLowerCase() || '') &&
-          pet.type.toLowerCase().includes(criteria?.type?.toLowerCase() || '') &&
-          pet.name.toLowerCase().includes(criteria?.name?.toLowerCase() || '') &&
-          pet.breed.toLowerCase().includes(criteria?.breed?.toLowerCase() || '')
+          pet.adoptionStatus.toLowerCase().includes(searchTerm?.adoptionStatus?.toLowerCase() || '') &&
+          pet.height.toLowerCase().includes(searchTerm?.height?.toLowerCase() || '') &&
+          pet.weight.toLowerCase().includes(searchTerm?.weight?.toLowerCase() || '') &&
+          pet.type.toLowerCase().includes(searchTerm?.type?.toLowerCase() || '') &&
+          pet.name.toLowerCase().includes(searchTerm?.name?.toLowerCase() || '') &&
+          pet.breed.toLowerCase().includes(searchTerm?.breed?.toLowerCase() || '')
         );
       });
-  
+
       console.log('Filtered pets:', filteredPets);
-  
+
       setPetsData(filteredPets);
       setError(null);
       return filteredPets;
@@ -91,10 +126,10 @@ export default function FetchPetsProvider({ children }) {
       setLoading(false);
     }
   }, []);
-  
 
   const value = {
     petsData,
+    setPetsData,
     loading,
     error,
     fetchPetDataById,

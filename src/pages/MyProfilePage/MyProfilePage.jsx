@@ -1,33 +1,33 @@
-import React from 'react';
-import EditProfileForm from './EditProfileForm';
-import './MyProfilePage.css';
-import { useAuth } from '../../context/AuthProvider.jsx';
+import React, {useEffect} from 'react';
 import localforage from 'localforage';
+import { useAuth } from '../../context/AuthProvider.jsx';
+import EditProfileForm from './EditProfileForm';
 
 export default function MyProfilePage() {
-  const { user, login, updateUser } = useAuth();
+  const { user, updateUser } = useAuth();
 
   const handleSave = async (formData) => {
     try {
-      console.log('Saving profile:', formData);
 
-      const { email, id } = formData;
-
-      updateUser(formData);
-      const updatedUser = { ...user, ...formData };
-      login(updatedUser);
-
-      const userLocalStorageKey = `userData_${email}`;
-      const existingUserData = await localforage.getItem(userLocalStorageKey);
-      const updatedUserData = { ...existingUserData, ...formData };
-      await localforage.setItem(userLocalStorageKey, updatedUserData);
-
-      console.log('Save data:', formData);
+      updateUser({ ...user, ...formData });
     } catch (error) {
       console.error('Error saving profile:', error);
-
+    }
   };
-}
+
+
+useEffect(() => {
+    const updateUserData = async () => {
+      const userLocalStorageKey = `userData_${user.id}`;
+      const existingUserData = await localforage.getItem(userLocalStorageKey) || {};
+      const updatedUserData = { ...existingUserData, ...user };
+      await localforage.setItem(userLocalStorageKey, updatedUserData);
+    };
+
+    if (user) {
+      updateUserData();
+    }
+  }, [user]);
 
   return (
     <div className='profile-page-container'>

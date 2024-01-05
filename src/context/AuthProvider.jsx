@@ -23,8 +23,7 @@ export const AuthProvider = ({ children }) => {
 
   const login = async (userData) => {
     const { email, ...profileData } = userData;
-    const storedUser = await localforage.getItem('user');
-    const updatedUser = { ...storedUser, email, ...profileData };
+    const updatedUser = { email, ...profileData };
     setUser(updatedUser);
     await localforage.setItem('user', updatedUser);
     await localforage.setItem(`userProfile_${email}`, profileData);
@@ -33,10 +32,11 @@ export const AuthProvider = ({ children }) => {
   const updateUser = async (updatedUser) => {
     setUser(updatedUser);
     await localforage.setItem('user', updatedUser);
-    const { email, ...profileData } = updatedUser;
-    await localforage.setItem(`userProfile_${email}`, profileData);
+    const userLocalStorageKey = `userData_${updatedUser.id}`;
+    const existingUserData = await localforage.getItem(userLocalStorageKey) || {};
+    const updatedUserData = { ...existingUserData, ...updatedUser };
+    await localforage.setItem(userLocalStorageKey, updatedUserData);
   };
-
   const logout = () => {
     setUser(null);
     localforage.removeItem('user');

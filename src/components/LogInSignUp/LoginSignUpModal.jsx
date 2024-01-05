@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Modal, Nav, Tab, Form, Button } from 'react-bootstrap';
+import { Modal, Nav, Tab, Form } from 'react-bootstrap';
 import SignUpForm from './SignUpForm';
 import LoginForm from './LoginForm';
 import { useNavigate } from 'react-router-dom';
@@ -21,22 +21,20 @@ export default function LoginSignUpModal({ show, onHide, onSignup, onLogin }) {
 
   const handleSignup = async (userData) => {
     onSignup(userData);
-    const registeredUsers = (await localforage.getItem('registeredUsers')) || [];
-    registeredUsers.push({ email: userData.email, password: userData.password });
-    await localforage.setItem('registeredUsers', registeredUsers);
-    await localforage.setItem('userData', userData);
+    const users = (await localforage.getItem('users')) || [];
+    users.push({ email: userData.email, password: userData.password });
+    await localforage.setItem('users', users);
+    await localforage.setItem('user', userData);
     onHide();
     navigate('/home');
   };
 
   const handleLogin = (userData) => {
     onLogin({ ...userData, isAdmin: isAdminLogin });
-    localStorage.setItem('userData', JSON.stringify(userData));
+    localStorage.setItem('user', JSON.stringify(userData));
     onHide();
     navigate('/home');
   };
-
-  const getTabTitle = () => (isLoginPage ? 'Login' : 'Sign Up');
 
   return (
     <Modal show={show} onHide={onHide} centered>
@@ -63,7 +61,7 @@ export default function LoginSignUpModal({ show, onHide, onSignup, onLogin }) {
                 <Form.Check
                   className='checkbox-input'
                   type="checkbox"
-                  label="Login as Admin"
+                  label="I'm admin"
                   checked={isAdminLogin}
                   onChange={handleCheckboxChange}
                 />
@@ -78,4 +76,4 @@ export default function LoginSignUpModal({ show, onHide, onSignup, onLogin }) {
       </Tab.Container>
     </Modal>
   );
-} 
+}

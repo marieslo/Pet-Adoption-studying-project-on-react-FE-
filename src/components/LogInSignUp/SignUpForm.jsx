@@ -4,7 +4,6 @@ import localforage from 'localforage';
 import { useNavigate } from 'react-router-dom';
 import { nanoid } from 'nanoid';
 import { useAuth } from '../../context/AuthProvider';
-
 import './LoginSignUp.css';
 
 export default function SignUpForm() {
@@ -43,45 +42,41 @@ export default function SignUpForm() {
     });
 
     if (password !== confirmPassword) {
-      setInvalidFields((prevInvalidFields) => [...prevInvalidFields, 'password', 'confirmPassword']);
-      setErrorMessages((prevErrorMessages) => ({
-        ...prevErrorMessages,
+      setInvalidFields(['password', 'confirmPassword']);
+      setErrorMessages({
         password: "Passwords don't match",
         confirmPassword: "Passwords don't match",
-      }));
+      });
       return;
     }
 
     const passwordRegex = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}$/;
     if (!passwordRegex.test(password)) {
-      setInvalidFields((prevInvalidFields) => [...prevInvalidFields, 'password']);
-      setErrorMessages((prevErrorMessages) => ({
-        ...prevErrorMessages,
+      setInvalidFields(['password']);
+      setErrorMessages({
         password: 'Password must contain at least 8 characters, including 1 capital letter and 1 digit.',
-      }));
+      });
       return;
     }
 
     const phoneNumberRegex = /^\d{6,}$/;
     if (!phoneNumberRegex.test(phoneNumber)) {
-      setInvalidFields((prevInvalidFields) => [...prevInvalidFields, 'phoneNumber']);
-      setErrorMessages((prevErrorMessages) => ({
-        ...prevErrorMessages,
+      setInvalidFields(['phoneNumber']);
+      setErrorMessages({
         phoneNumber: 'Phone number must contain at least 6 digits.',
-      }));
+      });
       return;
     }
 
     try {
-      const registeredUsers = (await localforage.getItem('registeredUsers')) || [];
-      const isEmailUnique = registeredUsers.every((user) => user.email !== email);
+      const users = (await localforage.getItem('users')) || [];
+      const isEmailUnique = users.every((user) => user.email !== email);
 
       if (!isEmailUnique) {
-        setInvalidFields((prevInvalidFields) => [...prevInvalidFields, 'email']);
-        setErrorMessages((prevErrorMessages) => ({
-          ...prevErrorMessages,
+        setInvalidFields(['email']);
+        setErrorMessages({
           email: 'Email is already registered. Please use a different email.',
-        }));
+        });
         return;
       }
 
@@ -94,9 +89,9 @@ export default function SignUpForm() {
         phoneNumber,
       };
 
-      await localforage.setItem('userData', userData);
-      registeredUsers.push(userData);
-      await localforage.setItem('registeredUsers', registeredUsers);
+      await localforage.setItem('user', userData);
+      users.push(userData);
+      await localforage.setItem('users', users);
 
       login({ email, password, firstName, lastName, phoneNumber });
       updateUser(userData);
@@ -112,80 +107,52 @@ export default function SignUpForm() {
 
   useEffect(() => {
     if (showSuccessMessage) {
-      navigate('/home');
+      navigate('/home');;
     }
   }, [showSuccessMessage, navigate]);
 
   return (
     <Form onSubmit={handleSubmit}>
-      {showSuccessMessage && (
-        <Alert variant="success">
-          Signup successful!
-        </Alert>
-      )}
+      {showSuccessMessage && <Alert variant="success">Signup successful!</Alert>}
 
       <Form.Group controlId="formBasicEmail" className={invalidFields.includes('email') ? 'invalid' : ''}>
         <Form.Label>Email address</Form.Label>
-        <Form.Control
-          type="email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-        />
+        <Form.Control type="email" value={email} onChange={(e) => setEmail(e.target.value)} />
         {errorMessages.email && <small className="text-danger">{errorMessages.email}</small>}
       </Form.Group>
 
       <Form.Group controlId="formBasicPassword" className={invalidFields.includes('password') ? 'invalid' : ''}>
         <Form.Label>Password</Form.Label>
-        <Form.Control
-          type="password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-        />
+        <Form.Control type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
         {errorMessages.password && <small className="text-danger">{errorMessages.password}</small>}
       </Form.Group>
 
       <Form.Group controlId="formBasicConfirmPassword" className={invalidFields.includes('confirmPassword') ? 'invalid' : ''}>
         <Form.Label>Confirm Password</Form.Label>
-        <Form.Control
-          type="password"
-          value={confirmPassword}
-          onChange={(e) => setConfirmPassword(e.target.value)}
-        />
+        <Form.Control type="password" value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} />
         {errorMessages.confirmPassword && <small className="text-danger">{errorMessages.confirmPassword}</small>}
       </Form.Group>
 
       <Form.Group controlId="formBasicFirstName">
         <Form.Label>First Name</Form.Label>
-        <Form.Control
-          type="text"
-          value={firstName}
-          onChange={(e) => setFirstName(e.target.value)}
-        />
+        <Form.Control type="text" value={firstName} onChange={(e) => setFirstName(e.target.value)} />
       </Form.Group>
 
       <Form.Group controlId="formBasicLastName">
         <Form.Label>Last Name</Form.Label>
-        <Form.Control
-          type="text"
-          value={lastName}
-          onChange={(e) => setLastName(e.target.value)}
-        />
+        <Form.Control type="text" value={lastName} onChange={(e) => setLastName(e.target.value)} />
       </Form.Group>
 
       <Form.Group controlId="formBasicPhoneNumber" className={invalidFields.includes('phoneNumber') ? 'invalid' : ''}>
         <Form.Label>Phone Number</Form.Label>
-        <Form.Control
-          type="tel"
-          value={phoneNumber}
-          onChange={(e) => setPhoneNumber(e.target.value)}
-        />
+        <Form.Control type="tel" value={phoneNumber} onChange={(e) => setPhoneNumber(e.target.value)} />
         {errorMessages.phoneNumber && <small className="text-danger">{errorMessages.phoneNumber}</small>}
       </Form.Group>
 
       <button className="switch-login-signup-btn" type="submit">
         {loading ? (
           <>
-            <Spinner as="span" animation="border" size="sm" role="status" aria-hidden="true" />
+            <Spinner as="span" animation="grow" size="sm" role="status" aria-hidden="true" />
             {' Loading...'}
           </>
         ) : (

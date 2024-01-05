@@ -2,7 +2,6 @@
   display: flex;
   flex-wrap: nowrap;
   overflow-x: auto; 
-  width: 90%;
 }
 
 .pet-card-container {
@@ -11,12 +10,11 @@
 
 .allpets-feed-fragment-container {
   position: relative;
-  width: 630px !important;
+  width: 660px !important;
   text-align: center;
   display: flex;
-  flex-direction: row;
-  white-space: wrap; 
-  overflow-x: scroll; 
+  flex-direction: column;
+  overflow-y: scroll; 
   scrollbar-width: thin;
 }
 
